@@ -16,17 +16,17 @@ import { cog, flash, list } from 'ionicons/icons';
 
 const pages = [
   {
-    title: 'Feed',
+    title: '今日Menu',
     icon: flash,
     url: '/tabs/feed',
   },
   {
-    title: 'Lists',
+    title: '分类',
     icon: list,
     url: '/tabs/lists',
   },
   {
-    title: 'Settings',
+    title: '我de',
     icon: cog,
     url: '/tabs/settings',
   },

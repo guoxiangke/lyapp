@@ -1,6 +1,6 @@
 import { Store as PullStateStore } from 'pullstate';
 
-import { lists, homeItems, notifications } from '../mock';
+import { lists, homeItems, todayItems, notifications } from '../mock';
 
 const Store = new PullStateStore({
   safeAreaTop: 0,
@@ -14,6 +14,10 @@ const Store = new PullStateStore({
   settings: {
     enableNotifications: true,
   },
+  todayItems,
+  playerList: [],
+  playerCurrent: 0,
+  isPlaying: false,
 });
 
 export default Store;

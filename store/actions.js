@@ -18,6 +18,20 @@ export const setSettings = settings => {
   });
 };
 
+export const setPlayerList = (playerList) => {
+  Store.update(s => {
+    s.playerList = playerList;
+    console.log('setPlayerList called', playerList.length)
+  });
+};
+
+export const setCurrentPlayer = (playerCurrent, isPlaying) => {
+  Store.update(s => {
+    s.playerCurrent = playerCurrent;
+    s.isPlaying = isPlaying;
+  });
+};
+
 // App-specific actions
 
 export const setDone = (list, item, done) => {

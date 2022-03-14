@@ -11,36 +11,40 @@ import {
   IonIcon,
   IonContent,
   IonMenuButton,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonAvatar,
 } from '@ionic/react';
+import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
 import Notifications from './Notifications';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { notificationsOutline } from 'ionicons/icons';
 import { getHomeItems } from '../../store/selectors';
+// import { getTodayItems } from '../../store/selectors';
 import Store from '../../store';
 
-const FeedCard = ({ title, type, text, author, authorAvatar, image }) => (
-  <Card className="my-4 mx-auto">
-    <div className="h-32 w-full relative">
-      <Image className="rounded-t-xl" objectFit="cover" src={image} alt="" layout='fill' />
-    </div>
-    <div className="px-4 py-4 bg-white rounded-b-xl dark:bg-gray-900">
-      <h4 className="font-bold py-0 text-s text-gray-400 dark:text-gray-500 uppercase">{type}</h4>
-      <h2 className="font-bold text-2xl text-gray-800 dark:text-gray-100">{title}</h2>
-      <p className="sm:text-sm text-s text-gray-500 mr-1 my-3 dark:text-gray-400">{text}</p>
-      <div className="flex items-center space-x-4">
-        <div className="w-10 h-10 relative">
-          <Image layout='fill' src={authorAvatar} className="rounded-full" alt="" />
-        </div>
-        <h3 className="text-gray-500 dark:text-gray-200 m-l-8 text-sm font-medium">{author}</h3>
-      </div>
-    </div>
-  </Card>
-);
-
-const Feed = () => {
+import * as selectors from '../../store/selectors';
+// import { setSettings } from '../../store/actions';
+// const Settings = () => {
+//   const settings = Store.useState(selectors.getSettings);
+//TODO setPlayerList
+const Feed = ({ data }) => {
   const homeItems = Store.useState(getHomeItems);
-  const [showNotifications, setShowNotifications] = useState(false);
+  const todayItems = Store.useState(selectors.getTodayItems);
 
+  const playList = Store.useState(selectors.getPlayerList);
+
+  console.log('playList.length', playList.length)
+  const [showNotifications, setShowNotifications] = useState(false);
+  // const playerRef = useRef();
+  
+
+  // console.log(playerRef.current)
+  console.log( '1111playList',  playList)
+  if(playList.value){
+    console.log(playList.value, 'playList')
+  }
   return (
     <IonPage>
       <IonHeader>
@@ -63,9 +67,20 @@ const Feed = () => {
           </IonToolbar>
         </IonHeader>
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
-        {homeItems.map((i, index) => (
-          <FeedCard {...i} key={index} />
+        <IonList>
+        {todayItems.map((i, index) => (
+            <IonItem key={index}>
+              <IonAvatar slot="start">
+                <img src={i.avatar_sq} />
+              </IonAvatar>
+              <IonLabel>
+                <h2>{i.series_title}</h2>
+                <p>{i.sermon_notes.replace(/(<([^>]+)>)/gi, "")}</p>
+              </IonLabel>
+              <IonIcon icon={caretForwardOutline}/>
+            </IonItem>
         ))}
+        </IonList>
       </IonContent>
     </IonPage>
   );
