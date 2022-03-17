@@ -1,11 +1,21 @@
-import { React, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from "react";
 import ReactHowler from 'react-howler'
 import raf from 'raf' // requestAnimationFrame polyfill
 import styles from '../styles/Player.module.css'
 import { IonProgressBar, IonIcon, IonContent } from '@ionic/react';
 import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
 
-function Player(props) {
+import { AppContext, getPlaying, seekTrack, getTrackCurrent } from '../store/state';
+
+function Player() {
+  const { state, dispatch } = useContext(AppContext);
+  // console.log(state.playing, 'state.playing.index Player')
+  const track = getTrackCurrent(state);
+  const playing = getPlaying(state);
+  
+  // console.log(track, '5次track？')
+  // console.log(playing, '5次playing？')
+  
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isSeeking, setIsSeeking] = useState(false);
@@ -63,11 +73,13 @@ function Player(props) {
     console.log(player, 'player');
     if(isPlaying) renderSeekPos()
   }, [isPlaying]);
+
+  
    return (
     <>
       <div>
        <ReactHowler
-          src={props.song.src}
+          src={track.url.replace('txly2.net','lystore.yongbuzhixi.com')}
           playing={isPlaying}
           preload={true}
           onLoad={handleOnLoad}
@@ -81,8 +93,8 @@ function Player(props) {
 
         <div className={`px-8 py-2`}>
         	<div className="meta">
-          	<h5 className="title font-semibold text-sm">齐来颂扬-{seek.toFixed(0)} / {duration.toFixed(0)}</h5>
-          	<p className="description text-sm">弹指之间：以斯帖记──《那双看不见的手》、《任何环境不要惧怕》、《祷告良辰》</p>
+          	<h5 className="title font-semibold text-sm">{track.series_title}-{seek.toFixed(0)} / {duration.toFixed(0)}</h5>
+          	<p className="description text-sm">{track.sermon_notes.replace(/(<([^>]+)>)/gi, "")}</p>
           </div>
         </div>
 

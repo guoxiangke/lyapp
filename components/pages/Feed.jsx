@@ -18,33 +18,55 @@ import {
 } from '@ionic/react';
 import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
 import Notifications from './Notifications';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback, useContext, useEffect } from 'react';
 import { notificationsOutline } from 'ionicons/icons';
-import { getHomeItems } from '../../store/selectors';
-// import { getTodayItems } from '../../store/selectors';
+
 import Store from '../../store';
+import { AppContext, getHotTracks, getNewTracks, playTrack } from '../../store/state';
 
 import * as selectors from '../../store/selectors';
-// import { setSettings } from '../../store/actions';
-// const Settings = () => {
-//   const settings = Store.useState(selectors.getSettings);
-//TODO setPlayerList
-const Feed = ({ data }) => {
-  const homeItems = Store.useState(getHomeItems);
-  const todayItems = Store.useState(selectors.getTodayItems);
 
-  const playList = Store.useState(selectors.getPlayerList);
+const Feed = () => {
+  const { state, dispatch } = useContext(AppContext);
 
-  console.log('playList.length', playList.length)
+  console.log(state, 'state.playing.index Feed')
+  const fetchTodayLists = useCallback(async () => {
+    // Fetch json from external API
+    const res = await fetch('https://txly2.net/index.php?option=com_vdata&task=get_feeds&type=vd6usermons42&column=sermon_publish_up&value=2022-03-16')
+    const today = await res.json()
+    state.tracks.today = today;
+    dispatch({
+      type: 'setTracts',
+      tracks: state.tracks
+    })
+
+    // doPlay(today[0]);
+    // // 设置当前播放的节目
+    // let index = 0;
+    // dispatch({
+    //   type: 'setTract',
+    //   tracks: today[index]
+    // })
+    // 设置当前播放的节目 index
+    // state.playing.index = index;
+    // dispatch({
+    //   type: 'setPlaying',
+    //   tracks: state.playing
+    // })
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchTodayLists();
+  }, [fetchTodayLists]);
+
+  const doPlay = useCallback(track => {
+    console.log('doPlay called', 'then dispatch(playTrack', track)
+    dispatch(playTrack(track));
+  });
+
   const [showNotifications, setShowNotifications] = useState(false);
   // const playerRef = useRef();
   
-
-  // console.log(playerRef.current)
-  console.log( '1111playList',  playList)
-  if(playList.value){
-    console.log(playList.value, 'playList')
-  }
   return (
     <IonPage>
       <IonHeader>
@@ -68,14 +90,14 @@ const Feed = ({ data }) => {
         </IonHeader>
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
         <IonList>
-        {todayItems.map((i, index) => (
-            <IonItem key={index}>
+        {state.tracks.today.map((track, index) => (
+            <IonItem key={index} onClick={() => doPlay(track)} >
               <IonAvatar slot="start">
-                <img src={i.avatar_sq} />
+                <img src={track.avatar_sq} />
               </IonAvatar>
               <IonLabel>
-                <h2>{i.series_title}</h2>
-                <p>{i.sermon_notes.replace(/(<([^>]+)>)/gi, "")}</p>
+                <h2>{track.series_title}</h2>
+                <p>{track.sermon_notes.replace(/(<([^>]+)>)/gi, "")}</p>
               </IonLabel>
               <IonIcon icon={caretForwardOutline}/>
             </IonItem>
