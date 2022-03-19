@@ -20,13 +20,6 @@ const reducer = (state, action) => {
   const user = getUser(state);
 
   switch (action.type) {
-    case 'setTracts': {
-      return { ...state, tracts: action.tracts }
-    }
-    case 'setTract': {
-      console.log(action.tract)
-      return { ...state, tract: action.tract }
-    }
     case 'setPlaying': {
       return { ...state, playing: action.playing }
     }
@@ -44,12 +37,73 @@ const reducer = (state, action) => {
       return {
         ...state,
         playing: {
-          ...playing,
+          ...state.playing,
           paused: true
         }
       }
     }
     case 'PLAY': {
+      return {
+        ...state,
+        playing: {
+          ...state.playing,
+          paused: false
+        }
+      }
+    }
+    case 'setTracks': {
+      return {
+        ...state,
+        tracks: action.tracks
+      }
+    }
+    case 'INIT': {
+      return {
+        ...state,
+        track: {
+          isloaded: false,
+          duration: 1,
+          ...action.track
+        }
+      }
+    }
+    case 'switchATrack': {
+      const index = getTrackIndex(state, state.track.url);
+      console.log(index)
+      return {
+        ...state,
+        playing: {
+          ...state.playing,
+          progress: 0,
+          index
+        },
+        track: {
+          isloaded: false,
+          duration: 1,
+          ...action.track
+        },
+      }
+    }
+    case 'setDuration': {
+      return {
+        ...state,
+        track: {
+          ...state.track,
+          isloaded: true,
+          duration: action.duration
+        }
+      }
+    }
+    case 'onPlay': {
+      return {
+        ...state,
+        playing: {
+          ...state.playing,
+          paused: false
+        },
+      }
+    }
+    case 'PLAY1': {
       if (action.track && action.track !== ct) {
         const newRecentTracks = getRecentTracks(state).filter(t => t.id !== action.track.id);
         const index = getTrackIndex(state, action.track.id);
@@ -82,8 +136,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         playing: {
-          ...playing,
-          progress: action.time <= ct.time ? Math.floor(action.time) : ct.time
+          ...state.playing,
+          progress: action.time// <= ct.time ? Math.floor(action.time) : ct.time
         }
       }
     }
@@ -156,21 +210,24 @@ const loggerReducer = logger(reducer);
 const initialState = {
   playing: {
     index: 0,
-    progress: 27000,
-    paused: false,
+    progress: 0,
+    paused: true,
   },
   track: {
+    isloaded: false,
+    duration: 1,
+
     avatar_sq: "https://txly2.net/images/program_banners/hp_prog_banner_sq.png",
     bookmark_id: "15-489",
     series_alias: "hp",
     series_id: "489",
     series_title: "星动一刻",
     sermon_id: "89616",
-    sermon_notes: "<p>热点慢半拍：女友和别人在一起，是我不好么？</p>",
+    sermon_notes: "直播节目",
     sermon_publish_up: "2022-03-16",
-    sermon_title: "星动一刻-20220316",
+    sermon_title: "直播节目-20220316",
     tag_id: "6",
-    url: "https://txly2.net/ly/audio/2022/hp/hp220316.mp3"
+    url: "https://txly2.net/ly/audio/2022/hp/hp220316.mp3",
   },
   auth: {
     user: null
@@ -182,10 +239,7 @@ const initialState = {
   ui: {
     playerOpen: false
   },
-  tracks: {
-    'cc': [],
-    'today': [],
-  },
+  tracks: [],
   music: {
     tracks: [
       {
@@ -243,9 +297,33 @@ export const pauseTrack = () => ({
   type: 'PAUSE'
 });
 
-export const playTrack = (track) => ({
+export const playTrack = () => ({
   type: 'PLAY',
+});
+
+export const setDuration = (duration) => ({
+  type: 'setDuration',
+  duration
+});
+
+export const setOnPlay = () => ({
+  type: 'onPlay',
+});
+
+
+export const switchATrack = (track) => ({
+  type: 'switchATrack',
   track
+});
+
+export const initTrack = (track) => ({
+  type: 'INIT',
+  track
+});
+
+export const setTracks = (tracks) => ({
+  type: 'setTracks',
+  tracks
 });
 
 export const seekTrack = (time) => ({
@@ -280,7 +358,9 @@ export const loggedIn = (user) => ({
 export const isPlayerOpen = (state) => state.ui.playerOpen;
 
 // Get all tracks in database
-export const getTracks = (state) => state.music.tracks;
+export const getTracks = (state) => state.tracks;
+export const getCurrentTrackIndex = (state) => state.playing.index;
+
 export const getNewTracks = (state) => 
   state.music.tracks.filter(t => state.music.newTracks.find(nt => nt === t.id));
 export const getHotTracks = (state) => 
@@ -291,11 +371,14 @@ export const getRecentTracks = (state) => state.user.recentTracks;
 export const isFavTrack = (state, track) => !!state.user.favTracks.find(t => t.id === track.id);
 
 export const getPlaying = (state) => state.playing;
+export const getIsPlaying = (state) => !state.playing.paused;
 
-export const getCurrentTrack = (state, index) => state.music.tracks[state.playing ? state.playing.index : -1];
+// export const getCurrentTrack = (state, index) => state.music.tracks[state.playing ? state.playing.index : -1];
 export const getTrackCurrent = (state) => state.track;
+export const getCurrentTrack = (state) => state.track;
 
 
 export const getTrack = (state, id) => state.music.tracks.find(t => t.id === id);
-export const getTrackIndex = (state, id) => state.music.tracks.findIndex(t => t.id === id);
+// const index = getTrackIndex(state, action.track.url);
+export const getTrackIndex = (state, url) => state.tracks.findIndex(t => t.url === url);
 export const getUser = (state) => state.user;

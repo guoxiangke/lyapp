@@ -1,86 +1,99 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState, useCallback } from "react";
 import ReactHowler from 'react-howler'
-import raf from 'raf' // requestAnimationFrame polyfill
 import styles from '../styles/Player.module.css'
-import { IonProgressBar, IonIcon, IonContent } from '@ionic/react';
+import { IonProgressBar, IonIcon, IonContent,IonAvatar } from '@ionic/react';
 import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
 
-import { AppContext, getPlaying, seekTrack, getTrackCurrent } from '../store/state';
+import { AppContext, getPlaying, seekTrack, getTrackCurrent, pauseTrack, playTrack, getIsPlaying, setDuration, setOnPlay, getTracks, switchATrack, getCurrentTrackIndex } from '../store/state';
 
 function Player() {
   const { state, dispatch } = useContext(AppContext);
-  // console.log(state.playing, 'state.playing.index Player')
+  const playing = getPlaying(state); // 当前播放的节目{}
   const track = getTrackCurrent(state);
-  const playing = getPlaying(state);
-  
-  // console.log(track, '5次track？')
-  // console.log(playing, '5次playing？')
-  
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isSeeking, setIsSeeking] = useState(false);
-  const [seek, setSeek] = useState(0.0);
-  const [duration, setDuration] = useState(0.0);
-
-  const [raf1, setRaf1] = useState();
+  const tracks = getTracks(state);
+  const index = getCurrentTrackIndex(state);
+  if (!playing) return null;
+  if (!track) return null;
+  const isPlaying = getIsPlaying(state); // 当前播放状态
+  // console.log('Player', '5次？')
   
 
   // const player = this.refs.player;
   const playerRef = useRef();
-  const handlePlay =  () => setIsPlaying(true);
-  const handleStop =  () => { playerRef.current.stop() || setIsPlaying(false) };
 
-// {() => setIsLoaded(true)}
-    // this.setState({
-    //   loaded: true,
-    //   duration: this.player.duration()
-    // })
+  const doPlayToggle = useCallback((e) => {
+    // Stop the toggle from opening the modal
+    e.stopPropagation();
+    if (playing.paused) {
+      dispatch(playTrack());
+    } else {
+      dispatch(pauseTrack());
+    }
+  })
+
   const handleOnLoad =  () => {
-    setIsLoaded(true)
-    setDuration(playerRef.current.duration())
+    dispatch(setDuration(playerRef.current.duration()));
+    console.log(playerRef.current.duration(),'2 times?')
   };
   const handleOnPlay =  () => {
-    setIsPlaying(true);
+    dispatch(setOnPlay());
+    // setIsPlaying(true);
     // isPlaying = true // Uncaught TypeError: "isPlaying" is read-only
     // React useState hook is asynchronous!  https://dev.to/shareef/react-usestate-hook-is-asynchronous-1hia
-    console.log('handleOnPlay', isPlaying);
-    renderSeekPos();
+    console.log('handleOnPlay');
   };
   const handleOnEnd =  () => {
-    console.log('handleOnEnd');
-    clearRAF()
-    console.log('handleOnEnd2');
+    //reset progress
+    dispatch(pauseTrack());
+    dispatch(seekTrack(0));
+    console.log('handleOnEnd','seekTrack(0)');
   };
 
-  const renderSeekPos =  () => {
-    if (!isSeeking) {
-      setSeek(playerRef.current.seek());
-    }
-    // console.log(playerRef.current.howler.playing, playerRef.current.howler._src)
-    if (isPlaying) {
-      setRaf1(raf(renderSeekPos))
-    }
-    console.log('renderSeekPos',isSeeking);
-  };
-  // componentWillUnmount 
-  const clearRAF = () => {
-    raf.cancel(raf1)
-  }
+
 
   // https://stackoverflow.com/questions/53898810/executing-async-code-on-update-of-state-with-react-hooks
-  useEffect(() => {
-    const player = playerRef.current;
-    console.log(player, 'player');
-    if(isPlaying) renderSeekPos()
-  }, [isPlaying]);
+  const [handle, setHandle] = useState(null);
 
+  useEffect(() => {
+    const playing = getPlaying(state);
+    console.log(playing)
+    let h;
+    if (track.isloaded && playing && !playing.paused) {
+      clearTimeout(h);
+      h = setTimeout(() => {
+        dispatch(seekTrack(Math.floor(playing.progress + 1)));
+        // setProgress(progress+1)
+      }, 1000);
+      setHandle(h);
+    }
+
+    return () => {
+      clearTimeout(h);
+    };
+  }, [state.playing]);
   
+  const doPlayPrev = useCallback(() => {
+      let i = index
+      if(i == 0) {
+        i=tracks.length-1;
+      }else{
+        i--;
+      }
+      dispatch(switchATrack(tracks[i]));
+      dispatch(playTrack());
+  })
+  const doPlayNext = useCallback(() => {
+      let i = index
+      if(++i == tracks.length) i=0;
+      dispatch(switchATrack(tracks[i]));
+      dispatch(playTrack());
+  })
    return (
     <>
       <div>
        <ReactHowler
           src={track.url.replace('txly2.net','lystore.yongbuzhixi.com')}
-          playing={isPlaying}
+          playing={!playing.paused}
           preload={true}
           onLoad={handleOnLoad}
           ref={playerRef}
@@ -91,16 +104,23 @@ function Player() {
       </div>
       <div className={`${styles.player} flex flex-row justify-center mx-36 text-2xl`}>
 
+        <IonAvatar slot="start">
+          <img src={"https://images.weserv.nl/?w=100&url="+track.avatar_sq} />
+        </IonAvatar>
+
         <div className={`px-8 py-2`}>
         	<div className="meta">
-          	<h5 className="title font-semibold text-sm">{track.series_title}-{seek.toFixed(0)} / {duration.toFixed(0)}</h5>
+          	<h5 className="title font-semibold text-sm">{track.series_title}-{playing.progress.toFixed(0)} / {track.duration.toFixed(0)}</h5>
           	<p className="description text-sm">{track.sermon_notes.replace(/(<([^>]+)>)/gi, "")}</p>
           </div>
         </div>
 
         <div>
-            {!isPlaying && <IonIcon onClick={handlePlay} icon={caretForwardOutline}/>}
-            {isPlaying && <IonIcon onClick={handleStop}  icon={pauseOutline}/>}
+          {playing.paused ? (
+              <IonIcon icon={caretForwardOutline} onClick={doPlayToggle} />
+          ) : (
+            <IonIcon icon={pauseOutline} onClick={doPlayToggle} />
+          )}
         </div>
       </div>
      </>

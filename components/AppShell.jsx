@@ -24,12 +24,12 @@ import Player from "./Player"
 
 import { AppContextProvider } from "../store/state";
 const AppShell = () => {
+  // AppContextProvider 放在哪里？
+  // @see https://ionicframework.com/blog/using-react-hooks-in-an-ionic-react-app/
+  // Hi. For your App component, you can't use useContext(AppContext) there since App is not children of AppContextProvider.
+  // @see https://github.com/facebook/react/issues/16225
   return (
     <IonApp>
-      // AppContextProvider 放在哪里？
-      // @see https://ionicframework.com/blog/using-react-hooks-in-an-ionic-react-app/
-      // Hi. For your App component, you can't use useContext(AppContext) there since App is not children of AppContextProvider.
-      // @see https://github.com/facebook/react/issues/16225
       <AppContextProvider>
         <IonReactRouter>
           <IonPage>
