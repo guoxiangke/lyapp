@@ -57,6 +57,13 @@ const reducer = (state, action) => {
         tracks: action.tracks
       }
     }
+    case 'setCategories': {
+      return {
+        ...state,
+        categories: action.categories
+      }
+    }
+
     case 'INIT': {
       return {
         ...state,
@@ -240,6 +247,7 @@ const initialState = {
     playerOpen: false
   },
   tracks: [],
+  categories: [],
   music: {
     tracks: [
       {
@@ -325,6 +333,11 @@ export const setTracks = (tracks) => ({
   type: 'setTracks',
   tracks
 });
+export const setCategories = (categories) => ({
+  type: 'setCategories',
+  categories
+});
+
 
 export const seekTrack = (time) => ({
   type: 'SEEK',
@@ -359,6 +372,8 @@ export const isPlayerOpen = (state) => state.ui.playerOpen;
 
 // Get all tracks in database
 export const getTracks = (state) => state.tracks;
+export const getCategories = (state) => state.categories;
+
 export const getCurrentTrackIndex = (state) => state.playing.index;
 
 export const getNewTracks = (state) => 

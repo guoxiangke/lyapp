@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState, useCallback } from "react";
 import ReactHowler from 'react-howler'
 import styles from '../styles/Player.module.css'
-import { IonProgressBar, IonIcon, IonContent,IonAvatar } from '@ionic/react';
+import { IonProgressBar, IonIcon, IonContent,IonAvatar, IonRange } from '@ionic/react';
 import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
 
 import { AppContext, getPlaying, seekTrack, getTrackCurrent, pauseTrack, playTrack, getIsPlaying, setDuration, setOnPlay, getTracks, switchATrack, getCurrentTrackIndex } from '../store/state';
@@ -100,6 +100,7 @@ function Player() {
           onPlay={handleOnPlay}
           onEnd={handleOnEnd}
         />
+        <IonRange></IonRange>
         <IonProgressBar className={`${styles.bar} flex flex-row justify-center mx-36 text-2xl`} value={0.1}></IonProgressBar>
       </div>
       <div className={`${styles.player} flex flex-row justify-center mx-36 text-2xl`}>
