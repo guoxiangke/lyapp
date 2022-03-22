@@ -13,11 +13,11 @@
 	margin-left: 18px;
 }
 
-.bar {
-	z-index: 1;
+
+.range{
 	width: 100%;
-	border-bottom: 2px solid rgba(59, 130, 246, 0.9);
+	z-index: 99;
 	position: absolute;
-	bottom: 50px;
+	bottom: 25px;
 	margin: 0;
 }

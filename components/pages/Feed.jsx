@@ -34,7 +34,7 @@ const Feed = () => {
     var d = new Date(); //2022-03-18
     const res = await fetch('https://txly2.net/index.php?option=com_vdata&task=get_feeds&type=vd6usermons42&column=sermon_publish_up&value='+d.toISOString().substring(0, 10))
     const today = await res.json()
-    // console.log(today)
+    console.log(today)
     dispatch(setTracks(today));
 
     // 设置当前播放的节目

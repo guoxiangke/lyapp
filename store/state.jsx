@@ -57,6 +57,13 @@ const reducer = (state, action) => {
         tracks: action.tracks
       }
     }
+    case 'setProgramTracks': {
+      return {
+        ...state,
+        programTracks: action.programTracks
+      }
+    }
+
     case 'setCategories': {
       return {
         ...state,
@@ -247,6 +254,9 @@ const initialState = {
     playerOpen: false
   },
   tracks: [],
+  todayTracks: [], //上一曲/下一曲
+  programTracks: [],
+  currentProgram: {},
   categories: [],
   music: {
     tracks: [
@@ -333,6 +343,14 @@ export const setTracks = (tracks) => ({
   type: 'setTracks',
   tracks
 });
+
+
+export const setProgramTracks = (programTracks) => ({
+  type: 'setProgramTracks',
+  programTracks
+});
+
+
 export const setCategories = (categories) => ({
   type: 'setCategories',
   categories

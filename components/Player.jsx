@@ -100,8 +100,7 @@ function Player() {
           onPlay={handleOnPlay}
           onEnd={handleOnEnd}
         />
-        <IonRange></IonRange>
-        <IonProgressBar className={`${styles.bar} flex flex-row justify-center mx-36 text-2xl`} value={0.1}></IonProgressBar>
+        <IonRange className={`${styles.range}`}  value={playing.progress/track.duration*100}></IonRange>
       </div>
       <div className={`${styles.player} flex flex-row justify-center mx-36 text-2xl`}>
 

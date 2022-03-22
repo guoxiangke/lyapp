@@ -18,7 +18,7 @@ const Lists = () => {
   const { state, dispatch } = useContext(AppContext);
   const fetchLists = useCallback(async () => {
     // Fetch json from external API
-    const res = await fetch('https://open.ly.yongbuzhixi.com/api/categories')
+    const res = await fetch('https://open.729ly.net/api/categories')
     const categories = await res.json()
     dispatch(setCategories(categories.data));
   }, [dispatch]);
@@ -28,7 +28,6 @@ const Lists = () => {
   }, [fetchLists]);
 
   const categories = getCategories(state);
-  console.log(categories)
   return (
      <IonPage>
       <IonHeader>
@@ -37,34 +36,29 @@ const Lists = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-
-    {/*-- Item Dividers in a List  color="secondary" --*/}
-    <IonList>
-     {categories.map((Category, index) => (
-      <div  key={index}>
-      <IonItemDivider>
-        <IonLabel>
-          {Category.name}
-        </IonLabel>
-      </IonItemDivider>
-        {Category && Category.programs.map((Item, i) => (
-          <IonItem key={i} button onClick={() => { }}>
-            <IonThumbnail slot="start">
-              <img src={"https://images.weserv.nl/?w=100&url=https://txly2.net/images/program_banners/"+Item.alias+"_prog_banner_sq.png"} />
-            </IonThumbnail>
+        <IonList>
+         {categories.map((Category, index) => (
+          <div  key={index}>
+          <IonItemDivider>
             <IonLabel>
-              <h3>{Item.name}</h3>
-              <p>{Item.brief}</p>
+              {Category.name}
             </IonLabel>
-            <IonIcon icon={closeCircle} slot="end" />
-          </IonItem>
+          </IonItemDivider>
+            {Category && Category.programs.map((Program, i) => (
+              <IonItem key={i} button onClick={() => { console.log('clicked!'); }} routerLink={`/tabs/lists/${Program.alias}`}>
+
+                <IonAvatar slot="start">
+                  <img src={"https://images.weserv.nl/?w=100&url=https://txly2.net/images/program_banners/"+Program.alias+"_prog_banner_sq.png"} />
+                </IonAvatar>
+                <IonLabel>
+                  <h3>{Program.name}</h3>
+                  <p>{Program.brief}</p>
+                </IonLabel>
+              </IonItem>
+              ))}
+          </div>
           ))}
-      </div>
-      ))}
-
-
-
-    </IonList>
+        </IonList>
       </IonContent>
     </IonPage>
   );
