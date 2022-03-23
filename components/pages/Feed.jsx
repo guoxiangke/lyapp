@@ -23,50 +23,39 @@ import { useState, useRef, useCallback, useContext, useEffect } from 'react';
 import { notificationsOutline } from 'ionicons/icons';
 
 import Store from '../../store';
-import { AppContext, getHotTracks, getNewTracks, switchATrack, playTrack, initTrack, setTracks, getPlaying, pauseTrack,getTrackCurrent } from '../../store/state';
+import { AppContext, getHotTracks, getNewTracks, switchATrack, playTrack, initTrack, setTracks, setTodayTracks, pauseTrack,getTrackCurrent } from '../../store/state';
 
 import * as selectors from '../../store/selectors';
+import * as tools from '../../utils/tools';
 
 const Feed = () => {
   const { state, dispatch } = useContext(AppContext);
   const fetchTodayLists = useCallback(async () => {
     // Fetch json from external API
-    var d = new Date(); //2022-03-18
-    const res = await fetch('https://txly2.net/index.php?option=com_vdata&task=get_feeds&type=vd6usermons42&column=sermon_publish_up&value='+d.toISOString().substring(0, 10))
-    const today = await res.json()
-    console.log(today)
-    dispatch(setTracks(today));
-
-    // 设置当前播放的节目
+    // const res = await fetch('https://txly2.net/index.php?option=com_vdata&task=get_feeds&type=vd6usermons42&column=sermon_publish_up&value='+tools.getTodayString())
+    const res = await fetch('https://open.729ly.net/api/today')
+    let today = await res.json()
+    console.log(today.data)
+    dispatch(setTodayTracks(today.data));
+    dispatch(setTracks(today.data)); //第一次播放本页面的音乐的时候设定！用来上一曲/下一曲
+    // 设置当前播放的节目及index
     let index = 0;
-    dispatch(initTrack(today[index]));
-
-    // 设置当前播放的节目 index
-    // state.playing.index = index;
-    // dispatch({
-    //   type: 'setPlaying',
-    //   tracks: state.playing
-    // })
+    dispatch(initTrack(today.data[index])); //同时设定了当前播放的是第0首
   }, [dispatch]);
 
   useEffect(() => {
     fetchTodayLists();
   }, [fetchTodayLists]);
 
-  // const doPlay = useCallback(track => {
-  //   console.log('doPlay useCallback', 'then dispatch(playTrack', track)
-  //   dispatch(switchATrack(track));
-  //   dispatch(playTrack());
-  // });
-
-  const playing = getPlaying(state); // 当前播放的节目{}
-  const track = getTrackCurrent(state);
-  const doPlayToggle = useCallback((trackItem) => {
-    if(track.sermon_title !== trackItem.sermon_title){
-      dispatch(switchATrack(trackItem));
+  // const playing = getPlaying(state); // 当前播放的节目{}
+  const ct = getTrackCurrent(state);
+  const doPlayToggle = useCallback((trackItem, index) => {
+    dispatch(setTracks(state.todayTracks));
+    if(ct.id !== trackItem.id){
+      dispatch(switchATrack(trackItem, index));
       dispatch(playTrack());
     }else{
-      if (playing.paused) {
+      if (ct.paused) {
         dispatch(playTrack());
       }else{
         dispatch(pauseTrack());
@@ -77,7 +66,6 @@ const Feed = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   // const playerRef = useRef();
   
-  const ct = getTrackCurrent(state);
   return (
     <IonPage>
       <IonHeader>
@@ -101,18 +89,18 @@ const Feed = () => {
         </IonHeader>
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
         <IonList>
-        {state.tracks.map((trackItem, index) => (
-            <IonItem key={index} onClick={() => doPlayToggle(trackItem)}>
+        {state.todayTracks.map((trackItem, index) => (
+            <IonItem key={index} onClick={() => doPlayToggle(trackItem, index)}>
               <IonAvatar slot="start">
-                <img src={"https://images.weserv.nl/?w=100&url="+trackItem.avatar_sq} />
+                <img src={"https://images.weserv.nl/?w=100&url=https://txly2.net/images/program_banners/"+trackItem.code+"_prog_banner_sq.png"} />
               </IonAvatar>
               <IonLabel>
-                <h2>{trackItem.series_title}</h2>
-                <p>{trackItem.sermon_notes.replace(/(<([^>]+)>)/gi, "")}</p>
+                <h2>{trackItem.program_name}</h2>
+                <p>{trackItem.description}</p>
               </IonLabel>
               {
-                trackItem.sermon_title == ct.sermon_title
-                ?(playing.paused ? (
+                trackItem.id == ct.id
+                ?(ct.paused ? (
                     <IonIcon icon={caretForwardOutline} />
                   ) : (
                     <IonIcon icon={pauseOutline} />

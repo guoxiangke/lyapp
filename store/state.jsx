@@ -15,7 +15,7 @@ import React from 'react';
 export const AppContext = React.createContext();
 
 const reducer = (state, action) => {
-  const playing = getPlaying(state);
+  const playing = !state.track.paused;
   const ct = getCurrentTrack(state);
   const user = getUser(state);
 
@@ -36,18 +36,18 @@ const reducer = (state, action) => {
     case 'PAUSE': {
       return {
         ...state,
-        playing: {
-          ...state.playing,
-          paused: true
+        track: {
+          ...state.track,
+          paused: true,
         }
       }
     }
-    case 'PLAY': {
+    case 'playTrack': {
       return {
         ...state,
-        playing: {
-          ...state.playing,
-          paused: false
+        track: {
+          ...state.track,
+          paused: false,
         }
       }
     }
@@ -55,6 +55,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         tracks: action.tracks
+      }
+    }
+    case 'setTodayTracks': {
+      return {
+        ...state,
+        todayTracks: action.todayTracks
       }
     }
     case 'setProgramTracks': {
@@ -71,30 +77,30 @@ const reducer = (state, action) => {
       }
     }
 
-    case 'INIT': {
+    case 'initTrack': {
       return {
         ...state,
         track: {
+          ...action.track,
+          paused: true,
           isloaded: false,
           duration: 1,
-          ...action.track
+          index: 0,
+          progress: 0
         }
       }
     }
     case 'switchATrack': {
-      const index = getTrackIndex(state, state.track.url);
-      console.log(index)
+      console.log('switchATrack', action)
       return {
         ...state,
-        playing: {
-          ...state.playing,
-          progress: 0,
-          index
-        },
         track: {
+          ...action.track,
+          paused: false,
           isloaded: false,
           duration: 1,
-          ...action.track
+          index: action.index,
+          progress: 0,
         },
       }
     }
@@ -111,10 +117,10 @@ const reducer = (state, action) => {
     case 'onPlay': {
       return {
         ...state,
-        playing: {
-          ...state.playing,
-          paused: false
-        },
+        track: {
+          ...state.track,
+          paused: false,
+        }
       }
     }
     case 'PLAY1': {
@@ -149,10 +155,10 @@ const reducer = (state, action) => {
     case 'SEEK': {
       return {
         ...state,
-        playing: {
-          ...state.playing,
-          progress: action.time// <= ct.time ? Math.floor(action.time) : ct.time
-        }
+        track: {
+          ...state.track,
+          progress: action.time,
+        },
       }
     }
     case 'NEXT': {
@@ -222,26 +228,28 @@ const logger = (reducer) => {
 const loggerReducer = logger(reducer);
 
 const initialState = {
-  playing: {
-    index: 0,
-    progress: 0,
-    paused: true,
-  },
+  // playing: {
+  //   index: 0,
+  //   progress: 0,
+  //   paused: true,
+  // },
   track: {
     isloaded: false,
     duration: 1,
+    index: 0,
+    progress: 0,
+    paused: true,
 
-    avatar_sq: "https://txly2.net/images/program_banners/hp_prog_banner_sq.png",
-    bookmark_id: "15-489",
-    series_alias: "hp",
-    series_id: "489",
-    series_title: "星动一刻",
-    sermon_id: "89616",
-    sermon_notes: "直播节目",
-    sermon_publish_up: "2022-03-16",
-    sermon_title: "直播节目-20220316",
-    tag_id: "6",
-    url: "https://txly2.net/ly/audio/2022/hp/hp220316.mp3",
+    link: "https://txly2.net/ly/audio/2022/hp/hp220316.mp3",
+    id:  76970,
+    description: "罪得赦免（利17:10-16）",
+    alias: "mw220323",
+    program_id:  28,
+    program_name:  "旷野吗哪",
+    code:  "mw",
+    play_at: "220323",
+    path:  "/ly/audio/2022/mw/mw220323.mp3",
+    
   },
   auth: {
     user: null
@@ -253,8 +261,8 @@ const initialState = {
   ui: {
     playerOpen: false
   },
-  tracks: [],
-  todayTracks: [], //上一曲/下一曲
+  tracks: [],  //上一曲 下一曲
+  todayTracks: [],
   programTracks: [],
   currentProgram: {},
   categories: [],
@@ -316,7 +324,7 @@ export const pauseTrack = () => ({
 });
 
 export const playTrack = () => ({
-  type: 'PLAY',
+  type: 'playTrack',
 });
 
 export const setDuration = (duration) => ({
@@ -329,13 +337,14 @@ export const setOnPlay = () => ({
 });
 
 
-export const switchATrack = (track) => ({
+export const switchATrack = (track, index) => ({
   type: 'switchATrack',
-  track
+  track,
+  index
 });
 
 export const initTrack = (track) => ({
-  type: 'INIT',
+  type: 'initTrack',
   track
 });
 
@@ -343,6 +352,12 @@ export const setTracks = (tracks) => ({
   type: 'setTracks',
   tracks
 });
+
+export const setTodayTracks = (todayTracks) => ({
+  type: 'setTodayTracks',
+  todayTracks
+});
+
 
 
 export const setProgramTracks = (programTracks) => ({
@@ -392,8 +407,6 @@ export const isPlayerOpen = (state) => state.ui.playerOpen;
 export const getTracks = (state) => state.tracks;
 export const getCategories = (state) => state.categories;
 
-export const getCurrentTrackIndex = (state) => state.playing.index;
-
 export const getNewTracks = (state) => 
   state.music.tracks.filter(t => state.music.newTracks.find(nt => nt === t.id));
 export const getHotTracks = (state) => 
@@ -403,10 +416,9 @@ export const getFavTracks = (state) => state.user.favTracks;
 export const getRecentTracks = (state) => state.user.recentTracks;
 export const isFavTrack = (state, track) => !!state.user.favTracks.find(t => t.id === track.id);
 
-export const getPlaying = (state) => state.playing;
-export const getIsPlaying = (state) => !state.playing.paused;
 
-// export const getCurrentTrack = (state, index) => state.music.tracks[state.playing ? state.playing.index : -1];
+export const getTrackIsPlaying = (state) => !state.track.paused;
+
 export const getTrackCurrent = (state) => state.track;
 export const getCurrentTrack = (state) => state.track;
 

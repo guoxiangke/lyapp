@@ -2,20 +2,16 @@ import React, { useContext, useEffect, useRef, useState, useCallback } from "rea
 import ReactHowler from 'react-howler'
 import styles from '../styles/Player.module.css'
 import { IonProgressBar, IonIcon, IonContent,IonAvatar, IonRange } from '@ionic/react';
-import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
+import { caretForwardOutline,refreshOutline,pauseOutline, playSkipForwardOutline, playSkipBackOutline  } from 'ionicons/icons';
 
-import { AppContext, getPlaying, seekTrack, getTrackCurrent, pauseTrack, playTrack, getIsPlaying, setDuration, setOnPlay, getTracks, switchATrack, getCurrentTrackIndex } from '../store/state';
+import { AppContext, seekTrack, getTrackCurrent,getTrackIsPlaying, pauseTrack, playTrack, setDuration, setOnPlay, getTracks, switchATrack } from '../store/state';
 
 function Player() {
   const { state, dispatch } = useContext(AppContext);
-  const playing = getPlaying(state); // 当前播放的节目{}
   const track = getTrackCurrent(state);
-  const tracks = getTracks(state);
-  const index = getCurrentTrackIndex(state);
-  if (!playing) return null;
   if (!track) return null;
-  const isPlaying = getIsPlaying(state); // 当前播放状态
-  // console.log('Player', '5次？')
+  const tracks = getTracks(state);
+  
   
 
   // const player = this.refs.player;
@@ -24,7 +20,7 @@ function Player() {
   const doPlayToggle = useCallback((e) => {
     // Stop the toggle from opening the modal
     e.stopPropagation();
-    if (playing.paused) {
+    if (track.paused) {
       dispatch(playTrack());
     } else {
       dispatch(pauseTrack());
@@ -36,91 +32,87 @@ function Player() {
     console.log(playerRef.current.duration(),'2 times?')
   };
   const handleOnPlay =  () => {
-    dispatch(setOnPlay());
-    // setIsPlaying(true);
-    // isPlaying = true // Uncaught TypeError: "isPlaying" is read-only
+    // dispatch(setOnPlay());
     // React useState hook is asynchronous!  https://dev.to/shareef/react-usestate-hook-is-asynchronous-1hia
     console.log('handleOnPlay');
   };
   const handleOnEnd =  () => {
-    //reset progress
-    dispatch(pauseTrack());
-    dispatch(seekTrack(0));
-    console.log('handleOnEnd','seekTrack(0)');
+    doPlayNext()
+    console.log('handleOnEnd','doPlayNext');
   };
 
 
 
   // https://stackoverflow.com/questions/53898810/executing-async-code-on-update-of-state-with-react-hooks
   const [handle, setHandle] = useState(null);
-
+  
   useEffect(() => {
-    const playing = getPlaying(state);
-    console.log(playing)
+    const track = getTrackCurrent(state);
     let h;
-    if (track.isloaded && playing && !playing.paused) {
+    if (track.isloaded && !track.paused) {
       clearTimeout(h);
       h = setTimeout(() => {
-        dispatch(seekTrack(Math.floor(playing.progress + 1)));
-        // setProgress(progress+1)
+        dispatch(seekTrack(Math.floor(track.progress + 1)));
       }, 1000);
       setHandle(h);
     }
-
     return () => {
       clearTimeout(h);
     };
-  }, [state.playing]);
+  }, [state.track]);
   
   const doPlayPrev = useCallback(() => {
-      let i = index
+      let i = track.index;
       if(i == 0) {
         i=tracks.length-1;
       }else{
         i--;
       }
-      dispatch(switchATrack(tracks[i]));
+      dispatch(switchATrack(tracks[i], i));
       dispatch(playTrack());
   })
   const doPlayNext = useCallback(() => {
-      let i = index
+      let i = track.index;
       if(++i == tracks.length) i=0;
-      dispatch(switchATrack(tracks[i]));
-      dispatch(playTrack());
+      dispatch(switchATrack(tracks[i], i));
   })
    return (
     <>
       <div>
        <ReactHowler
-          src={track.url.replace('txly2.net','lystore.yongbuzhixi.com')}
-          playing={!playing.paused}
+          src={track.link.replace('txly2.net','lystore.yongbuzhixi.com')}
+          playing={!track.paused}
           preload={true}
           onLoad={handleOnLoad}
           ref={playerRef}
           onPlay={handleOnPlay}
           onEnd={handleOnEnd}
         />
-        <IonRange className={`${styles.range}`}  value={playing.progress/track.duration*100}></IonRange>
+        <IonRange className={`${styles.range}`}  value={track.progress/track.duration*100}></IonRange>
       </div>
       <div className={`${styles.player} flex flex-row justify-center mx-36 text-2xl`}>
 
         <IonAvatar slot="start">
-          <img src={"https://images.weserv.nl/?w=100&url="+track.avatar_sq} />
+          <img src={"https://images.weserv.nl/?w=100&url=https://txly2.net/images/program_banners/"+track.code+"_prog_banner_sq.png"} />
         </IonAvatar>
 
         <div className={`px-8 py-2`}>
         	<div className="meta">
-          	<h5 className="title font-semibold text-sm">{track.series_title}-{playing.progress.toFixed(0)} / {track.duration.toFixed(0)}</h5>
-          	<p className="description text-sm">{track.sermon_notes.replace(/(<([^>]+)>)/gi, "")}</p>
+          	<h5 className="title font-semibold text-sm">{track.program_name}-{track.progress.toFixed(0)} / {track.duration.toFixed(0)}</h5>
+          	<p className="description text-sm">{track.description}</p>
           </div>
         </div>
 
         <div>
-          {playing.paused ? (
+
+          <IonIcon icon={playSkipBackOutline} onClick={doPlayPrev} />
+          {track.paused ? (
               <IonIcon icon={caretForwardOutline} onClick={doPlayToggle} />
           ) : (
             <IonIcon icon={pauseOutline} onClick={doPlayToggle} />
           )}
+          <IonIcon icon={playSkipForwardOutline} onClick={doPlayNext} />
+
         </div>
       </div>
      </>

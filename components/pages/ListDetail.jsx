@@ -38,7 +38,7 @@ const ListItemEntry = ({ list, item }) => (
 );
 
 import { useState, useRef, useCallback, useContext, useEffect } from 'react';
-import { AppContext, getCategories, setProgramTracks,  getHotTracks, getNewTracks, switchATrack, playTrack, initTrack, setTracks, getPlaying, pauseTrack,getTrackCurrent } from '../../store/state';
+import { AppContext, getCategories, setProgramTracks,  getHotTracks, getNewTracks, switchATrack, playTrack, initTrack, setTracks, pauseTrack,getTrackCurrent } from '../../store/state';
 
 const ListDetail = ({ match }) => {
   const { state, dispatch } = useContext(AppContext);
@@ -71,23 +71,15 @@ const ListDetail = ({ match }) => {
 
 
   const ct = getTrackCurrent(state);
-  const playing = getPlaying(state); // 当前播放的节目{}
+  const playing = !ct.paused; // 当前播放的节目{}
   var d = new Date(); //2022-03-18
-  const doPlayToggle = useCallback((program) => {
-    let tract = {
-      url: program.link,
-      avatar_sq: "https://txly2.net/images/program_banners/hp_prog_banner_sq.png",
-      series_alias: program.alias,
-      series_title: program.program_name,
-      sermon_notes: program.description,
-      sermon_title: program.program_name+"-"+d.toISOString().substring(0, 2)+program.play_at,
-    }
-
-    if(ct.sermon_title !== tract.sermon_title){
-      dispatch(switchATrack(tract));
+  const doPlayToggle = useCallback((tract, index) => {
+    dispatch(setTracks(state.programTracks));
+    if(ct.id !== tract.id){
+      dispatch(switchATrack(tract, index));
       dispatch(playTrack());
     }else{
-      if (playing.paused) {
+      if (ct.paused) {
         dispatch(playTrack());
       }else{
         dispatch(pauseTrack());
@@ -112,7 +104,7 @@ const ListDetail = ({ match }) => {
         </IonHeader>
 
         {state.programTracks && state.programTracks.map((trackItem, index) => (
-            <IonItem key={index} onClick={() => doPlayToggle(trackItem)}>
+            <IonItem key={index} onClick={() => doPlayToggle(trackItem, index)}>
               <IonAvatar slot="start">
                 <img src={"https://images.weserv.nl/?w=100&url=https://txly2.net/images/program_banners/"+Aprogram.alias+"_prog_banner_sq.png"} />
               </IonAvatar>
@@ -121,8 +113,8 @@ const ListDetail = ({ match }) => {
                 <p>{trackItem.play_at}</p>
               </IonLabel>
               {
-                trackItem.program_name+"-"+d.toISOString().substring(0, 2)+trackItem.play_at  == ct.sermon_title
-                ?(playing.paused ? (
+                trackItem.id  == ct.id
+                ?(ct.paused ? (
                     <IonIcon icon={caretForwardOutline} />
                   ) : (
                     <IonIcon icon={pauseOutline} />
