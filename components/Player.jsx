@@ -17,9 +17,9 @@ function Player() {
   // const player = this.refs.player;
   const playerRef = useRef();
 
-  const doPlayToggle = useCallback((e) => {
+  const doPlayToggle = useCallback(() => {
     // Stop the toggle from opening the modal
-    e.stopPropagation();
+    // e.stopPropagation();
     if (track.paused) {
       dispatch(playTrack());
     } else {
