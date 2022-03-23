@@ -9,7 +9,6 @@ import { AppContext, seekTrack, getTrackCurrent,getTrackIsPlaying, pauseTrack, p
 function Player() {
   const { state, dispatch } = useContext(AppContext);
   const track = getTrackCurrent(state);
-  if (!track) return null;
   const tracks = getTracks(state);
   
   
@@ -80,7 +79,7 @@ function Player() {
     <>
       <div>
        <ReactHowler
-          src={track.link.replace('txly2.net','lystore.yongbuzhixi.com')}
+          src={track.link.replace('open.729ly.net','lystore.yongbuzhixi.com')}
           playing={!track.paused}
           preload={true}
           onLoad={handleOnLoad}
