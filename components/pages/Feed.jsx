@@ -1,5 +1,3 @@
-import Image from 'next/image';
-import Card from '../ui/Card';
 import styles from '../../styles/Feed.module.css'
 
 import {
@@ -19,23 +17,18 @@ import {
 } from '@ionic/react';
 import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
 import Notifications from './Notifications';
-import { useState, useRef, useCallback, useContext, useEffect } from 'react';
+import { useState, useCallback, useContext, useEffect } from 'react';
 import { notificationsOutline } from 'ionicons/icons';
 
-import Store from '../../store';
-import { AppContext, getHotTracks, getNewTracks, switchATrack, playTrack, initTrack, setTracks, setTodayTracks, pauseTrack,getTrackCurrent } from '../../store/state';
+import { AppContext, switchATrack, playTrack, initTrack, setTracks, setTodayTracks, pauseTrack,getTrackCurrent } from '../../store/state';
 
-import * as selectors from '../../store/selectors';
-import * as tools from '../../utils/tools';
 
 const Feed = () => {
   const { state, dispatch } = useContext(AppContext);
   const fetchTodayLists = useCallback(async () => {
     // Fetch json from external API
-    // const res = await fetch('https://txly2.net/index.php?option=com_vdata&task=get_feeds&type=vd6usermons42&column=sermon_publish_up&value='+tools.getTodayString())
     const res = await fetch('https://open.729ly.net/api/today')
     let today = await res.json()
-    console.log(today.data)
     dispatch(setTodayTracks(today.data));
     dispatch(setTracks(today.data)); //第一次播放本页面的音乐的时候设定！用来上一曲/下一曲
     // 设置当前播放的节目及index

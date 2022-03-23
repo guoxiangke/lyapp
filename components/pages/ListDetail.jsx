@@ -13,32 +13,11 @@ import {
   IonAvatar,
   IonIcon,
 } from '@ionic/react';
-import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
+import { caretForwardOutline, pauseOutline  } from 'ionicons/icons';
 // import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonList, IonText, IonAvatar, IonThumbnail, IonButton, IonIcon, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonInput, IonCheckbox, IonRange, IonNote, IonItemDivider } from '@ionic/react';
 
-import Store from '../../store';
-import * as actions from '../../store/actions';
-import * as selectors from '../../store/selectors';
-
-const ListItems = ({ list }) => {
-  return (
-    <IonList>
-      {(list?.items || []).map((item, key) => (
-        <ListItemEntry list={list} item={item} key={key} />
-      ))}
-    </IonList>
-  );
-};
-
-const ListItemEntry = ({ list, item }) => (
-  <IonItem onClick={() => actions.setDone(list, item, !item.done)}>
-    <IonLabel>{item.name}</IonLabel>
-    <IonIcon icon={caretForwardOutline}  slot="end" />
-  </IonItem>
-);
-
-import { useState, useRef, useCallback, useContext, useEffect } from 'react';
-import { AppContext, getCategories, setProgramTracks,  getHotTracks, getNewTracks, switchATrack, playTrack, initTrack, setTracks, pauseTrack,getTrackCurrent } from '../../store/state';
+import { useCallback, useContext, useEffect } from 'react';
+import { AppContext, getCategories, setProgramTracks, switchATrack, playTrack, setTracks, pauseTrack,getTrackCurrent } from '../../store/state';
 
 const ListDetail = ({ match }) => {
   const { state, dispatch } = useContext(AppContext);

@@ -15,6 +15,7 @@ function Player() {
   
 
   // const player = this.refs.player;
+  const playerRef = useRef();
 
   const doPlayToggle = useCallback((e) => {
     // Stop the toggle from opening the modal
@@ -27,7 +28,6 @@ function Player() {
   })
 
   const handleOnLoad =  () => {
-    const playerRef = useRef();
     dispatch(setDuration(playerRef.current.duration()));
     console.log(playerRef.current.duration(),'2 times?')
   };

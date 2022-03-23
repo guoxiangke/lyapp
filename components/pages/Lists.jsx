@@ -1,16 +1,8 @@
-import Store from '../../store';
-
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonList, IonText, IonAvatar, IonThumbnail, IonButton, IonIcon, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonInput, IonCheckbox, IonRange, IonNote, IonItemDivider } from '@ionic/react';
-import { closeCircle, home, star, navigate, informationCircle, checkmarkCircle, shuffle } from 'ionicons/icons';
+// import { closeCircle, home, star, navigate, informationCircle, checkmarkCircle, shuffle } from 'ionicons/icons';
 
 
-const ListEntry = ({ list, ...props }) => (
-  <IonItem routerLink={`/tabs/lists/${list.id}`} className="list-entry">
-    <IonLabel>{list.name}</IonLabel>
-  </IonItem>
-);
-
-import { useState, useRef, useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { AppContext, setCategories, getCategories } from '../../store/state';
 
 
