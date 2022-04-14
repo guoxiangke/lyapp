@@ -51,6 +51,12 @@ const reducer = (state, action) => {
         }
       }
     }
+    case 'setPlayer': {
+      return {
+        ...state,
+        player: action.player
+      }
+    }
     case 'setTracks': {
       return {
         ...state,
@@ -233,6 +239,7 @@ const initialState = {
   //   progress: 0,
   //   paused: true,
   // },
+  player:{},
   track: {
     isloaded: false,
     duration: 1,
@@ -359,6 +366,11 @@ export const setTodayTracks = (todayTracks) => ({
 });
 
 
+export const setPlayer = (player) => ({
+  type: 'setPlayer',
+  player
+});
+
 
 export const setProgramTracks = (programTracks) => ({
   type: 'setProgramTracks',
@@ -422,6 +434,7 @@ export const getTrackIsPlaying = (state) => !state.track.paused;
 export const getTrackCurrent = (state) => state.track;
 export const getCurrentTrack = (state) => state.track;
 
+export const getPlayer = (state) => state.player;
 
 export const getTrack = (state, id) => state.music.tracks.find(t => t.id === id);
 // const index = getTrackIndex(state, action.track.url);

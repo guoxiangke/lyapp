@@ -18,7 +18,7 @@ import {
 import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
 import Notifications from './Notifications';
 import { useState, useCallback, useContext, useEffect } from 'react';
-import { notificationsOutline } from 'ionicons/icons';
+import { notificationsOutline, musicalNotesOutline } from 'ionicons/icons';
 
 import { AppContext, switchATrack, playTrack, initTrack, setTracks, setTodayTracks, pauseTrack,getTrackCurrent } from '../../store/state';
 
@@ -63,13 +63,12 @@ const Feed = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Feed</IonTitle>
+          <IonTitle>今日节目</IonTitle>
           <IonButtons slot="start">
-            <IonMenuButton />
           </IonButtons>
           <IonButtons slot="end">
             <IonButton onClick={() => setShowNotifications(true)}>
-              <IonIcon icon={notificationsOutline} />
+              <IonIcon icon={musicalNotesOutline} />
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -77,7 +76,7 @@ const Feed = () => {
       <IonContent  className={`${styles.yyy} ion-padding`} fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Feed</IonTitle>
+            <IonTitle size="large">今日节目</IonTitle>
           </IonToolbar>
         </IonHeader>
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />

@@ -4,7 +4,9 @@ import styles from '../styles/Player.module.css'
 import { IonProgressBar, IonIcon, IonContent,IonAvatar, IonRange } from '@ionic/react';
 import { caretForwardOutline,refreshOutline,pauseOutline, playSkipForwardOutline, playSkipBackOutline  } from 'ionicons/icons';
 
-import { AppContext, seekTrack, getTrackCurrent,getTrackIsPlaying, pauseTrack, playTrack, setDuration, setOnPlay, getTracks, switchATrack } from '../store/state';
+import { AppContext, seekTrack, getTrackCurrent,getTrackIsPlaying, pauseTrack, playTrack, setDuration, setOnPlay, getTracks, switchATrack,
+  setPlayer,
+  } from '../store/state';
 
 function Player() {
   const { state, dispatch } = useContext(AppContext);
@@ -34,6 +36,7 @@ function Player() {
     // dispatch(setOnPlay());
     // React useState hook is asynchronous!  https://dev.to/shareef/react-usestate-hook-is-asynchronous-1hia
     console.log('handleOnPlay');
+    dispatch(setPlayer(playerRef.current));
   };
   const handleOnEnd =  () => {
     doPlayNext()
@@ -87,32 +90,6 @@ function Player() {
           onPlay={handleOnPlay}
           onEnd={handleOnEnd}
         />
-        <IonRange className={`${styles.range}`}  value={track.progress/track.duration*100}></IonRange>
-      </div>
-      <div className={`${styles.player} flex flex-row justify-center mx-36 text-2xl`}>
-
-        <IonAvatar slot="start">
-          <img src={"https://images.weserv.nl/?w=100&url=https://txly2.net/images/program_banners/"+track.code+"_prog_banner_sq.png"} />
-        </IonAvatar>
-
-        <div className={`px-8 py-2`}>
-        	<div className="meta">
-          	<h5 className="title font-semibold text-sm">{track.program_name}-{track.progress.toFixed(0)} / {track.duration.toFixed(0)}</h5>
-          	<p className="description text-sm">{track.description}</p>
-          </div>
-        </div>
-
-        <div>
-
-          <IonIcon icon={playSkipBackOutline} onClick={doPlayPrev} />
-          {track.paused ? (
-              <IonIcon icon={caretForwardOutline} onClick={doPlayToggle} />
-          ) : (
-            <IonIcon icon={pauseOutline} onClick={doPlayToggle} />
-          )}
-          <IonIcon icon={playSkipForwardOutline} onClick={doPlayNext} />
-
-        </div>
       </div>
      </>
   )

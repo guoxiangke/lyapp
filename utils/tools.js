@@ -5,3 +5,10 @@ export const getTodayString = () => {
     const day = `${d.getDate()}`.padStart(2, "0")
     return [year,month, day].join("-")
 }
+
+export const msToTime = (d) => {
+  var seconds = Math.floor((d / 1000) % 60),
+    minutes = Math.floor((d / (1000 * 60)) % 60);
+
+  return minutes + ":" + (seconds < 10 ? `0${seconds}` : seconds);
+}

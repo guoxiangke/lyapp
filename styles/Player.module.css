@@ -6,18 +6,22 @@
 	z-index: 1;
 	position: fixed;
 	width: auto;
-	height: 50px;
+	height: auto;
 	background: #fff;
 	padding: 5px;
 	margin-right: 18px;
 	margin-left: 18px;
+	color: #000;
 }
 
 
 .range{
 	width: 100%;
-	z-index: 99;
-	position: absolute;
-	top: 25px;
 	margin: 0;
+	height: 1em;
+}
+
+.cover{
+	width: 40%;
+	margin: auto;
 }
