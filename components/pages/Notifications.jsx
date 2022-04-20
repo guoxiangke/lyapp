@@ -122,10 +122,10 @@ const Notifications = ({ open, onDidDismiss }) => {
               <div>- {msToTime((track.duration-track.progress)*1000)}</div>
             </div>
           
-           <div className={`flex flex-row justify-between text-6xl mx-36`}>
+           <div className={`flex flex-row justify-between text-4xl mx-20`}>
             <IonIcon icon={playSkipBackOutline} onClick={doPlayPrev} />
             {track.paused ? (
-                <IonIcon icon={caretForwardOutline} onClick={doPlayToggle} />
+              <IonIcon icon={caretForwardOutline} onClick={doPlayToggle} />
             ) : (
               <IonIcon icon={pauseOutline} onClick={doPlayToggle} />
             )}
