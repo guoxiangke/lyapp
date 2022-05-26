@@ -82,7 +82,7 @@ function Player() {
     <>
       <div>
        <ReactHowler
-          src={track.link.replace('open.729ly.net','lystore.yongbuzhixi.com')}
+          src={track.link}
           playing={!track.paused}
           preload={true}
           onLoad={handleOnLoad}

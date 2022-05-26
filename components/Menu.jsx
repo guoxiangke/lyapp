@@ -16,20 +16,15 @@ import { cog, flash, list } from 'ionicons/icons';
 
 const pages = [
   {
-    title: '今日Menu',
+    title: '今日节目',
     icon: flash,
     url: '/tabs/feed',
   },
   {
-    title: '分类',
+    title: '节目分类',
     icon: list,
     url: '/tabs/lists',
-  },
-  {
-    title: '我de',
-    icon: cog,
-    url: '/tabs/settings',
-  },
+  }
 ];
 
 const Menu = () => {
