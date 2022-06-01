@@ -13,7 +13,8 @@ import {
   IonList,
   IonItem,
   IonLabel,
-  IonAvatar,
+  IonImg,
+  IonThumbnail,
 } from '@ionic/react';
 import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
 import Notifications from './Notifications';
@@ -83,9 +84,9 @@ const Feed = () => {
         <IonList>
         {state.todayTracks.map((trackItem, index) => (
             <IonItem key={index} onClick={() => doPlayToggle(trackItem, index)}>
-              <IonAvatar slot="start">
-                <img src={"https://images.weserv.nl/?w=100&url=https://txly2.net/images/program_banners/"+trackItem.code+"_prog_banner_sq.png"} />
-              </IonAvatar>
+              <IonThumbnail slot="start">
+                <IonImg src={"https://lpyy729.net/images/program_banners/"+trackItem.code+"_prog_banner_sq.png"} />
+              </IonThumbnail>
               <IonLabel>
                 <h2>{trackItem.program_name}</h2>
                 <p>{trackItem.description}</p>

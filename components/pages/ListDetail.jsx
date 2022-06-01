@@ -12,6 +12,8 @@ import {
   IonToolbar,
   IonAvatar,
   IonIcon,
+  IonImg,
+  IonThumbnail,
 } from '@ionic/react';
 import { caretForwardOutline, pauseOutline  } from 'ionicons/icons';
 // import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonList, IonText, IonAvatar, IonThumbnail, IonButton, IonIcon, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonInput, IonCheckbox, IonRange, IonNote, IonItemDivider } from '@ionic/react';
@@ -84,12 +86,12 @@ const ListDetail = ({ match }) => {
 
         {state.programTracks && state.programTracks.map((trackItem, index) => (
             <IonItem key={index} onClick={() => doPlayToggle(trackItem, index)}>
-              <IonAvatar slot="start">
-                <img src={"https://images.weserv.nl/?w=100&url=https://txly2.net/images/program_banners/"+Aprogram.alias+"_prog_banner_sq.png"} />
-              </IonAvatar>
+              <IonThumbnail slot="start">
+                <IonImg src={"https://txly2.net/images/program_banners/"+Aprogram.alias+"_prog_banner_sq.png"} />
+              </IonThumbnail>
               <IonLabel>
                 <h2>{trackItem.description}</h2>
-                <p>{trackItem.play_at}</p>
+                <p>20{trackItem.play_at.slice(0,2)}-{trackItem.play_at.slice(2,4)}-{trackItem.play_at.slice(4,6)}</p>
               </IonLabel>
               {
                 trackItem.id  == ct.id

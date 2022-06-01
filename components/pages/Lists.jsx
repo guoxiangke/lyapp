@@ -1,4 +1,7 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonList, IonText, IonAvatar, IonThumbnail, IonButton, IonIcon, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonInput, IonCheckbox, IonRange, IonNote, IonItemDivider } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonList, IonText, 
+  IonAvatar, 
+  IonImg,
+  IonThumbnail, IonButton, IonIcon, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonInput, IonCheckbox, IonRange, IonNote, IonItemDivider } from '@ionic/react';
 // import { closeCircle, home, star, navigate, informationCircle, checkmarkCircle, shuffle } from 'ionicons/icons';
 
 
@@ -36,12 +39,12 @@ const Lists = () => {
               {Category.name}
             </IonLabel>
           </IonItemDivider>
-            {Category && Category.programs.map((Program, i) => (
+            {Category && Category.programs.filter(item => item.end_at == null).map((Program, i) => (
               <IonItem key={i} button onClick={() => { console.log('clicked!'); }} routerLink={`/tabs/lists/${Program.alias}`}>
 
-                <IonAvatar slot="start">
-                  <img src={"https://images.weserv.nl/?w=100&url=https://txly2.net/images/program_banners/"+Program.alias+"_prog_banner_sq.png"} />
-                </IonAvatar>
+                <IonThumbnail slot="start">
+                  <IonImg src={"https://lpyy729.net/images/program_banners/"+Program.alias+"_prog_banner_sq.png"} />
+                </IonThumbnail>
                 <IonLabel>
                   <h3>{Program.name}</h3>
                   <p>{Program.brief}</p>
