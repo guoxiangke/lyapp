@@ -77,7 +77,7 @@ const Feed = () => {
       <IonContent  className={`${styles.yyy} ion-padding`} fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">今日节目</IonTitle>
+            <IonTitle size="large" className={`d-ion-title-large`}>今日节目</IonTitle>
           </IonToolbar>
         </IonHeader>
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />

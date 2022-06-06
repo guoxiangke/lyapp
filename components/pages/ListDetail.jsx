@@ -80,7 +80,7 @@ const ListDetail = ({ match }) => {
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">{Aprogram.name}</IonTitle>
+            <IonTitle size="large"  className={`d-ion-title-large`}>{Aprogram.name}</IonTitle>
           </IonToolbar>
         </IonHeader>
 
@@ -90,7 +90,7 @@ const ListDetail = ({ match }) => {
                 <IonImg src={"https://txly2.net/images/program_banners/"+Aprogram.alias+"_prog_banner_sq.png"} />
               </IonThumbnail>
               <IonLabel>
-                <h2>{trackItem.description}</h2>
+                <h3>{trackItem.description}</h3>
                 <p>20{trackItem.play_at.slice(0,2)}-{trackItem.play_at.slice(2,4)}-{trackItem.play_at.slice(4,6)}</p>
               </IonLabel>
               {

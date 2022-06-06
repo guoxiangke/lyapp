@@ -92,7 +92,7 @@ const Notifications = ({ open, onDidDismiss }) => {
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">当前播放</IonTitle>
+            <IonTitle size="large"  className={`d-ion-title-large`}>当前播放</IonTitle>
           </IonToolbar>
         </IonHeader>
 
