@@ -1,11 +1,13 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonList, IonText, 
   IonAvatar, 
   IonImg,
+  IonButtons,
   IonThumbnail, IonButton, IonIcon, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonInput, IonCheckbox, IonRange, IonNote, IonItemDivider } from '@ionic/react';
 // import { closeCircle, home, star, navigate, informationCircle, checkmarkCircle, shuffle } from 'ionicons/icons';
+import { notificationsOutline, musicalNotesOutline } from 'ionicons/icons';
+import Notifications from './Notifications';
 
-
-import { useCallback, useContext, useEffect } from 'react';
+import { useState, useCallback, useContext, useEffect } from 'react';
 import { AppContext, setCategories, getCategories } from '../../store/state';
 
 
@@ -23,14 +25,25 @@ const Lists = () => {
   }, [fetchLists]);
 
   const categories = getCategories(state);
+  const [showNotifications, setShowNotifications] = useState(false);
   return (
      <IonPage>
+
       <IonHeader>
         <IonToolbar>
           <IonTitle>节目分类</IonTitle>
+          <IonButtons slot="start">
+          </IonButtons>
+          <IonButtons slot="end">
+            <IonButton onClick={() => setShowNotifications(true)}>
+              <IonIcon icon={musicalNotesOutline} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
+
       <IonContent>
+        <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
         <IonList>
          {categories.map((Category, index) => (
           <div  key={index}>

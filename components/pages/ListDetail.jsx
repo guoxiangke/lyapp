@@ -14,11 +14,12 @@ import {
   IonIcon,
   IonImg,
   IonThumbnail,
+  IonButton,
 } from '@ionic/react';
-import { caretForwardOutline, pauseOutline  } from 'ionicons/icons';
+import { caretForwardOutline, pauseOutline,notificationsOutline, musicalNotesOutline  } from 'ionicons/icons';
+import Notifications from './Notifications';
 // import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonList, IonText, IonAvatar, IonThumbnail, IonButton, IonIcon, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonInput, IonCheckbox, IonRange, IonNote, IonItemDivider } from '@ionic/react';
-
-import { useCallback, useContext, useEffect } from 'react';
+import { useState, useCallback, useContext, useEffect } from 'react';
 import { AppContext, getCategories, setProgramTracks, switchATrack, playTrack, setTracks, pauseTrack,getTrackCurrent } from '../../store/state';
 
 const ListDetail = ({ match }) => {
@@ -67,12 +68,20 @@ const ListDetail = ({ match }) => {
       }
     }
   })
+
+  const [showNotifications, setShowNotifications] = useState(false);
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref="/tabs/lists" />
+          </IonButtons>
+
+          <IonButtons slot="end">
+            <IonButton onClick={() => setShowNotifications(true)}>
+              <IonIcon icon={musicalNotesOutline} />
+            </IonButton>
           </IonButtons>
           <IonTitle>{Aprogram.name}</IonTitle>
         </IonToolbar>
@@ -83,6 +92,7 @@ const ListDetail = ({ match }) => {
             <IonTitle size="large"  className={`d-ion-title-large`}>{Aprogram.name}</IonTitle>
           </IonToolbar>
         </IonHeader>
+        <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
 
         {state.programTracks && state.programTracks.map((trackItem, index) => (
             <IonItem key={index} onClick={() => doPlayToggle(trackItem, index)}>
