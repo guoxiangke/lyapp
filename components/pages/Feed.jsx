@@ -18,6 +18,7 @@ import {
 } from '@ionic/react';
 import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
 import Notifications from './Notifications';
+import Bottom from './Bottom';
 import { useState, useCallback, useContext, useEffect } from 'react';
 import { notificationsOutline, musicalNotesOutline } from 'ionicons/icons';
 
@@ -83,7 +84,7 @@ const Feed = () => {
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
         <IonList>
         {state.todayTracks.map((trackItem, index) => (
-            <IonItem key={index} onClick={() => doPlayToggle(trackItem, index)}>
+            <IonItem button key={index} onClick={() => doPlayToggle(trackItem, index)}>
               <IonThumbnail slot="start">
                 <IonImg src={"https://lpyy729.net/images/program_banners/"+trackItem.code+"_prog_banner_sq.png"} />
               </IonThumbnail>
@@ -107,6 +108,7 @@ const Feed = () => {
             </IonItem>
         ))}
         </IonList>
+        <Bottom />
       </IonContent>
     </IonPage>
   );

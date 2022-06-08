@@ -18,7 +18,7 @@ import {
 } from '@ionic/react';
 import { caretForwardOutline, pauseOutline,notificationsOutline, musicalNotesOutline  } from 'ionicons/icons';
 import Notifications from './Notifications';
-// import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonList, IonText, IonAvatar, IonThumbnail, IonButton, IonIcon, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonInput, IonCheckbox, IonRange, IonNote, IonItemDivider } from '@ionic/react';
+import Bottom from './Bottom';
 import { useState, useCallback, useContext, useEffect } from 'react';
 import { AppContext, getCategories, setProgramTracks, switchATrack, playTrack, setTracks, pauseTrack,getTrackCurrent } from '../../store/state';
 
@@ -93,9 +93,9 @@ const ListDetail = ({ match }) => {
           </IonToolbar>
         </IonHeader>
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
-
+        <IonList>
         {state.programTracks && state.programTracks.map((trackItem, index) => (
-            <IonItem key={index} onClick={() => doPlayToggle(trackItem, index)}>
+            <IonItem button key={index} onClick={() => doPlayToggle(trackItem, index)}>
               <IonThumbnail slot="start">
                 <IonImg src={"https://txly2.net/images/program_banners/"+Aprogram.alias+"_prog_banner_sq.png"} />
               </IonThumbnail>
@@ -114,10 +114,10 @@ const ListDetail = ({ match }) => {
                 : 
                 <IonIcon icon={caretForwardOutline}/>
               }
-
-              
             </IonItem>
         ))}
+        </IonList>
+        <Bottom />
       </IonContent>
     </IonPage>
   );

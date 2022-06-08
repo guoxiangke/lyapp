@@ -6,6 +6,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel
 // import { closeCircle, home, star, navigate, informationCircle, checkmarkCircle, shuffle } from 'ionicons/icons';
 import { notificationsOutline, musicalNotesOutline } from 'ionicons/icons';
 import Notifications from './Notifications';
+import Bottom from './Bottom';
 
 import { useState, useCallback, useContext, useEffect } from 'react';
 import { AppContext, setCategories, getCategories } from '../../store/state';
@@ -67,6 +68,7 @@ const Lists = () => {
           </div>
           ))}
         </IonList>
+        <Bottom />
       </IonContent>
     </IonPage>
   );
