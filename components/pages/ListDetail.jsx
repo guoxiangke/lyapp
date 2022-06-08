@@ -95,7 +95,7 @@ const ListDetail = ({ match }) => {
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
         <IonList>
         {state.programTracks && state.programTracks.map((trackItem, index) => (
-            <IonItem button key={index} onClick={() => doPlayToggle(trackItem, index)}>
+            <IonItem button detail="false" key={index} onClick={() => doPlayToggle(trackItem, index)}>
               <IonThumbnail slot="start">
                 <IonImg src={"https://txly2.net/images/program_banners/"+Aprogram.alias+"_prog_banner_sq.png"} />
               </IonThumbnail>

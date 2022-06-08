@@ -84,7 +84,7 @@ const Feed = () => {
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
         <IonList>
         {state.todayTracks.map((trackItem, index) => (
-            <IonItem button key={index} onClick={() => doPlayToggle(trackItem, index)}>
+            <IonItem button detail="false" key={index} onClick={() => doPlayToggle(trackItem, index)}>
               <IonThumbnail slot="start">
                 <IonImg src={"https://lpyy729.net/images/program_banners/"+trackItem.code+"_prog_banner_sq.png"} />
               </IonThumbnail>
