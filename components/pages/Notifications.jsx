@@ -112,6 +112,7 @@ const Notifications = ({ open, onDidDismiss }) => {
                 className={`${styles.range} flex flex-row justify-center py-0 text-xl`}  
                 value={track.progress/track.duration*100}
                 // onIonChange={(e) => { s(e.target.value)}}
+                // onTouchEnd={(e) => { handleMouseUpSeek(e.target.value/100*track.duration)}}
                 onMouseUp={(e) => { handleMouseUpSeek(e.target.value/100*track.duration)}}
                 ></IonRange>
             </div>

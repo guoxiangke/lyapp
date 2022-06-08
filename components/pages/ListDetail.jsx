@@ -117,7 +117,7 @@ const ListDetail = ({ match }) => {
             </IonItem>
         ))}
         </IonList>
-        <Bottom />
+        
       </IonContent>
     </IonPage>
   );

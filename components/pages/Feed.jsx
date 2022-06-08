@@ -108,7 +108,7 @@ const Feed = () => {
             </IonItem>
         ))}
         </IonList>
-        <Bottom />
+        
       </IonContent>
     </IonPage>
   );
