@@ -86,7 +86,7 @@ const Feed = () => {
         {state.todayTracks.map((trackItem, index) => (
             <IonItem button detail="false" key={index} onClick={() => doPlayToggle(trackItem, index)}>
               <IonThumbnail slot="start">
-                <IonImg src={"https://lpyy729.net/images/program_banners/"+trackItem.code+"_prog_banner_sq.png"} />
+                <IonImg src={"https://txly2.net/images/program_banners/"+trackItem.code+"_prog_banner_sq.png"} />
               </IonThumbnail>
               <IonLabel>
                 <h2>{trackItem.program_name}</h2>

@@ -57,7 +57,7 @@ const Lists = () => {
               <IonItem key={i} button onClick={() => { console.log('clicked!'); }} routerLink={`/tabs/lists/${Program.alias}`}>
 
                 <IonThumbnail slot="start">
-                  <IonImg src={"https://lpyy729.net/images/program_banners/"+Program.alias+"_prog_banner_sq.png"} />
+                  <IonImg src={"https://txly2.net/images/program_banners/"+Program.alias+"_prog_banner_sq.png"} />
                 </IonThumbnail>
                 <IonLabel>
                   <h3>{Program.name}</h3>

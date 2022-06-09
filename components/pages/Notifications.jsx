@@ -97,7 +97,7 @@ const Notifications = ({ open, onDidDismiss }) => {
         </IonHeader>
 
         
-          <IonImg className={`${styles.cover} pt-4`} src={"https://images.weserv.nl/?w=150&url=https://txly2.net/images/program_banners/"+track.code+"_prog_banner_sq.png"} />
+          <IonImg className={`${styles.cover} pt-4`} src={"https://txly2.net/images/program_banners/"+track.code+"_prog_banner_sq.png"} />
          
               <div className={`px-8 py-2`}>
                 <div className="meta">
