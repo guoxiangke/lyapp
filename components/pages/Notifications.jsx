@@ -113,7 +113,7 @@ const Notifications = ({ open, onDidDismiss }) => {
                 value={track.progress/track.duration*100}
                 // onIonChange={(e) => { s(e.target.value)}}
                 onTouchEnd={(e) => { handleMouseUpSeek(e.target.value/100*track.duration)}}
-                onMouseUp={(e) => { handleMouseUpSeek(e.target.value/100*track.duration)}}
+                // onMouseUp ={(e) => { handleMouseUpSeek(e.target.value/100*track.duration)}}
                 ></IonRange>
             </div>
             

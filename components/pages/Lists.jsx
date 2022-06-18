@@ -68,7 +68,7 @@ const Lists = () => {
           </div>
           ))}
         </IonList>
-        
+        <Bottom />
       </IonContent>
     </IonPage>
   );
