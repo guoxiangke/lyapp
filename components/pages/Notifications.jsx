@@ -71,9 +71,22 @@ const Notifications = ({ open, onDidDismiss }) => {
     }
   })
 
-  const handleMouseUpSeek = useCallback((p)=>{
-    dispatch(pauseTrack());
+  const handlePC = useCallback((e,p)=>{
+    if ('ontouchstart' in window) {
+        return; // onClick 事件，只在pc中执行！
+    }
+    // dispatch(pauseTrack());
+    player.stop();
     console.log('handleMouseUpSeek', p)
+    dispatch(seekTrack(p));
+    player.seek(p);
+    dispatch(playTrack());
+  })
+
+  const handleMobile = useCallback((e,p)=>{
+    // dispatch(pauseTrack());
+    player.stop();
+    console.log('handleTouchSeek', p)
     dispatch(seekTrack(p));
     player.seek(p);
     dispatch(playTrack());
@@ -112,8 +125,9 @@ const Notifications = ({ open, onDidDismiss }) => {
                 className={`${styles.range} flex flex-row justify-center py-0 text-xl`}  
                 value={track.progress/track.duration*100}
                 // onIonChange={(e) => { s(e.target.value)}}
-                onTouchEnd={(e) => { handleMouseUpSeek(e.target.value/100*track.duration)}}
-                // onMouseUp ={(e) => { handleMouseUpSeek(e.target.value/100*track.duration)}}
+                onTouchEnd={(e) => {handleMobile(e, e.target.value/100*track.duration)}}
+                onClick ={(e) => {handlePC(e, e.target.value/100*track.duration)}}
+                // onTouchStart={(e) => { alert(e.target.value)}}
                 ></IonRange>
             </div>
             
