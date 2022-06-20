@@ -70,6 +70,9 @@ const ListDetail = ({ match }) => {
   })
 
   const [showNotifications, setShowNotifications] = useState(false);
+  const today = new Date();
+  const priorDate = new Date(new Date().setDate(today.getDate() - 30));
+  const las30days = priorDate.toISOString().slice(2,10).replace(/-/g,"");
   return (
     <IonPage>
       <IonHeader>
@@ -94,7 +97,9 @@ const ListDetail = ({ match }) => {
         </IonHeader>
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
         <IonList>
-        {state.programTracks && state.programTracks.map((trackItem, index) => (
+        {state.programTracks && state.programTracks.filter(trackItem => {
+          return (trackItem.play_at >= las30days) // now - 30天
+        }).map((trackItem, index) => (
             <IonItem button detail="false" key={index} onClick={() => doPlayToggle(trackItem, index)}>
               <IonThumbnail slot="start">
                 <IonImg src={"https://txly2.net/images/program_banners/"+Aprogram.alias+"_prog_banner_sq.png"} />
