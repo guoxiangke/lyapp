@@ -15,8 +15,10 @@ import {
   IonLabel,
   IonImg,
   IonThumbnail,
+  IonFab, IonFabButton, IonFabList
 } from '@ionic/react';
-import { caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
+
+import { add, caretForwardOutline,refreshOutline,pauseOutline  } from 'ionicons/icons';
 import Notifications from './Notifications';
 import Bottom from './Bottom';
 import { useState, useCallback, useContext, useEffect } from 'react';
@@ -76,6 +78,14 @@ const Feed = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent  className={`${styles.yyy} ion-padding`} fullscreen>
+       {/*-- fab placed to the top end --*/}
+        <IonFab vertical="bottom" horizontal="end" slot="fixed" className="right-20">
+          <a href="https://ly729.airtime.pro">
+            <IonFabButton className="w-12 h-12">
+            <IonImg src="/recorded.jpg" alt="同行频道" />
+            </IonFabButton>
+          </a>
+        </IonFab>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large" className={`d-ion-title-large`}>今日节目</IonTitle>
