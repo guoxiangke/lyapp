@@ -21,7 +21,7 @@ const pages = [
     url: '/tabs/feed',
   },
   {
-    title: '节目分类',
+    title: '更多节目',
     icon: list,
     url: '/tabs/lists',
   }

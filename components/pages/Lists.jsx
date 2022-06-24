@@ -32,7 +32,7 @@ const Lists = () => {
 
       <IonHeader>
         <IonToolbar>
-          <IonTitle>节目分类</IonTitle>
+          <IonTitle>更多节目</IonTitle>
           <IonButtons slot="start">
           </IonButtons>
           <IonButtons slot="end">

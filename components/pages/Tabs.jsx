@@ -25,7 +25,7 @@ const Tabs = () => {
         </IonTabButton>
         <IonTabButton tab="tab2" href="/tabs/lists">
           <IonIcon icon={list} />
-          <IonLabel>节目分类</IonLabel>
+          <IonLabel>更多节目</IonLabel>
         </IonTabButton>
       </IonTabBar>
     </IonTabs>
