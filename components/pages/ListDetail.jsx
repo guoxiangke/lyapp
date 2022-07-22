@@ -20,7 +20,7 @@ import { caretForwardOutline, pauseOutline,notificationsOutline, musicalNotesOut
 import Notifications from './Notifications';
 import Bottom from './Bottom';
 import { useState, useCallback, useContext, useEffect } from 'react';
-import { AppContext, getCategories, setProgramTracks, switchATrack, playTrack, setTracks, pauseTrack,getTrackCurrent } from '../../store/state';
+import { AppContext, getCategories, setCategories, setProgramTracks, switchATrack, playTrack, setTracks, pauseTrack,getTrackCurrent } from '../../store/state';
 
 const ListDetail = ({ match }) => {
   const { state, dispatch } = useContext(AppContext);
@@ -28,6 +28,24 @@ const ListDetail = ({ match }) => {
   const {
     params: { listId },
   } = match;
+
+
+  const fetchLists = useCallback(async () => {
+    // Fetch json from external API
+    const res = await fetch('https://open.729ly.net/api/program/'+listId)
+    const programs = await res.json()
+    dispatch(setProgramTracks(programs.data));
+    // 如果是刷新，而非从 列表进入本页详情
+    if(categories.length==0) {
+      const res = await fetch('https://open.729ly.net/api/categories')
+      const categories = await res.json()
+      dispatch(setCategories(categories.data));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchLists();
+  }, [fetchLists]);
 
   const categories = getCategories(state);
   let Aprogram = {}
@@ -38,19 +56,6 @@ const ListDetail = ({ match }) => {
       }
     })
   })
-
-  const fetchLists = useCallback(async () => {
-    // Fetch json from external API
-    const res = await fetch('https://open.729ly.net/api/program/'+listId)
-    const programs = await res.json()
-    dispatch(setProgramTracks(programs.data));
-  }, [dispatch]);
-
-  useEffect(() => {
-    fetchLists();
-  }, [fetchLists]);
-
-
 
   const ct = getTrackCurrent(state);
   const playing = !ct.paused; // 当前播放的节目{}
