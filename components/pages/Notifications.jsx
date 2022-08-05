@@ -15,7 +15,11 @@ import {
   IonImg,
   IonGrid, IonRow, IonCol
 } from '@ionic/react';
-import { caretForwardOutline,refreshOutline,pauseOutline, playSkipForwardOutline, playSkipBackOutline  } from 'ionicons/icons';
+import { caretForwardOutline,refreshOutline,pauseOutline, playSkipForwardOutline, playSkipBackOutline,
+  arrowRedoOutline,
+  arrowUndoOutline
+} from 'ionicons/icons';
+
 // import { IonProgressBar, IonIcon, IonContent,IonAvatar, IonRange } from '@ionic/react';
 import Store from '../../store';
 import { getNotifications } from '../../store/selectors';
@@ -56,6 +60,26 @@ const Notifications = ({ open, onDidDismiss }) => {
       dispatch(switchATrack(tracks[i], i));
       dispatch(playTrack());
   })
+
+  const seek = (p) =>{
+    player.stop();
+    dispatch(seekTrack(p));
+    player.seek(p);
+    dispatch(playTrack());
+  }
+
+  const doSpeedForward = useCallback(() => {
+    let p = Math.floor(track.progress + 15);
+    if(p>=track.duration) p=track.duration-10;
+    seek(p)
+  })
+
+  const doSpeedBack = useCallback(() => {
+    let p = Math.floor(track.progress - 15);
+    if(p<=0) p=0;
+    seek(p)
+  })
+    
   const doPlayNext = useCallback(() => {
       let i = track.index;
       if(++i == tracks.length) i=0;
@@ -75,21 +99,11 @@ const Notifications = ({ open, onDidDismiss }) => {
     if ('ontouchstart' in window) {
         return; // onClick 事件，只在pc中执行！
     }
-    // dispatch(pauseTrack());
-    player.stop();
-    console.log('handleMouseUpSeek', p)
-    dispatch(seekTrack(p));
-    player.seek(p);
-    dispatch(playTrack());
+    seek(p)
   })
 
   const handleMobile = useCallback((e,p)=>{
-    // dispatch(pauseTrack());
-    player.stop();
-    console.log('handleTouchSeek', p)
-    dispatch(seekTrack(p));
-    player.seek(p);
-    dispatch(playTrack());
+    seek(p)
   })
 
   return (
@@ -139,11 +153,14 @@ const Notifications = ({ open, onDidDismiss }) => {
           
            <div className={`flex flex-row justify-between text-4xl mx-28`}>
             <IonIcon icon={playSkipBackOutline} onClick={doPlayPrev} />
+            <IonIcon icon={arrowUndoOutline} onClick={doSpeedBack} />
+  
             {track.paused ? (
               <IonIcon icon={caretForwardOutline} onClick={doPlayToggle} />
             ) : (
               <IonIcon icon={pauseOutline} onClick={doPlayToggle} />
             )}
+            <IonIcon icon={arrowRedoOutline} onClick={doSpeedForward} />
             <IonIcon icon={playSkipForwardOutline} onClick={doPlayNext} />
           </div>
 
