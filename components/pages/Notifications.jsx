@@ -105,6 +105,7 @@ const Notifications = ({ open, onDidDismiss }) => {
     seek(p)
   })
 
+  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
   return (
     <IonModal isOpen={open} onDidDismiss={onDidDismiss}>
       <IonHeader>
@@ -152,13 +153,26 @@ const Notifications = ({ open, onDidDismiss }) => {
           
            <div className={`flex flex-row justify-between text-4xl mx-4`}>
             <IonIcon icon={playSkipBackOutline} onClick={doPlayPrev} />
-            <img  onClick={doSpeedBack}  width="36px" src="/15-sec-back-white.png" />
+            {isDarkMode ? (
+              <img  onClick={doSpeedBack}  width="36px" src="/15-sec-back-white.png" />
+            ) : (
+              <img  onClick={doSpeedBack}  width="36px" src="/15-sec-back-black.png" />
+
+            )}
+
             {track.paused ? (
               <IonIcon icon={caretForwardOutline} onClick={doPlayToggle} />
             ) : (
               <IonIcon icon={pauseOutline} onClick={doPlayToggle} />
             )}
-            <img  onClick={doSpeedForward}  width="36px" src="/15-sec-forward-white.png" />
+
+            {isDarkMode ? (
+              <img  onClick={doSpeedForward}  width="36px" src="/15-sec-forward-white.png" />
+            ) : (
+              <img  onClick={doSpeedForward}  width="36px" src="/15-sec-forward-black.png" />
+
+            )}
+            
             <IonIcon icon={playSkipForwardOutline} onClick={doPlayNext} />
           </div>
 
