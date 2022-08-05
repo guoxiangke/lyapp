@@ -16,8 +16,7 @@ import {
   IonGrid, IonRow, IonCol
 } from '@ionic/react';
 import { caretForwardOutline,refreshOutline,pauseOutline, playSkipForwardOutline, playSkipBackOutline,
-  arrowRedoOutline,
-  arrowUndoOutline
+
 } from 'ionicons/icons';
 
 // import { IonProgressBar, IonIcon, IonContent,IonAvatar, IonRange } from '@ionic/react';
@@ -151,16 +150,15 @@ const Notifications = ({ open, onDidDismiss }) => {
               <div>- {msToTime((track.duration-track.progress)*1000)}</div>
             </div>
           
-           <div className={`flex flex-row justify-between text-4xl mx-28`}>
+           <div className={`flex flex-row justify-between text-4xl mx-4`}>
             <IonIcon icon={playSkipBackOutline} onClick={doPlayPrev} />
-            <IonIcon icon={arrowUndoOutline} onClick={doSpeedBack} />
-  
+            <img  onClick={doSpeedBack}  width="36px" src="/15-sec-back-white.png" />
             {track.paused ? (
               <IonIcon icon={caretForwardOutline} onClick={doPlayToggle} />
             ) : (
               <IonIcon icon={pauseOutline} onClick={doPlayToggle} />
             )}
-            <IonIcon icon={arrowRedoOutline} onClick={doSpeedForward} />
+            <img  onClick={doSpeedForward}  width="36px" src="/15-sec-forward-white.png" />
             <IonIcon icon={playSkipForwardOutline} onClick={doPlayNext} />
           </div>
 
