@@ -62,15 +62,6 @@ const Feed = () => {
 
   const [showNotifications, setShowNotifications] = useState(false);
   // const playerRef = useRef();
-  
-  function formatDesc(description) {
-    if(description.length>30){
-      let partA = description.substr(0,30)
-      let partB = description.substr(30)
-      return <div> {partA}   <br/>  {partB} </div>;
-    }
-    return description
-  }
 
   return (
     <IonPage>
@@ -109,7 +100,7 @@ const Feed = () => {
               </IonThumbnail>
               <IonLabel>
                 <h2>{trackItem.program_name}</h2>
-                {formatDesc(trackItem.description)}
+                <div className={`${styles.twoline}`}>{trackItem.description}</div>
               </IonLabel>
               {
                 trackItem.id == ct.id
