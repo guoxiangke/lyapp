@@ -98,11 +98,10 @@ const Feed = () => {
               <IonThumbnail slot="start">
                 <IonImg src={"https://txly2.net/images/program_banners/"+trackItem.code+"_prog_banner_sq.png"} />
               </IonThumbnail>
-              <div className="my-1 mr-1">
+              <IonLabel>
                 <h2>{trackItem.program_name}</h2>
-                <div className="text-sm text-gray-500 text-ellipsis overflow-hidden">{trackItem.description}</div>
-              </div>
-              <IonLabel></IonLabel>
+                <p>{trackItem.description}</p>
+              </IonLabel>
               {
                 trackItem.id == ct.id
                 ?(ct.paused ? (
