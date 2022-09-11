@@ -82,7 +82,7 @@ const Feed = () => {
         <IonFab vertical="bottom" horizontal="end" slot="fixed" className="right-16">
           <a href="https://tx.729ly.net" rel="noreferrer" target="_blank">
             <IonFabButton className="w-12 h-12">
-            <IonImg src="/recorded.png" alt="同行频道" title="同行频道" />
+            <img styles="background-color: white;" src="/recorded.png" alt="同行频道" title="同行频道" />
             </IonFabButton>
           </a>
         </IonFab>
