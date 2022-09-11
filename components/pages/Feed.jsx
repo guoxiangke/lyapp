@@ -80,9 +80,9 @@ const Feed = () => {
       <IonContent  className={`${styles.yyy} ion-padding`} fullscreen>
        {/*-- fab placed to the top end --*/}
         <IonFab vertical="bottom" horizontal="end" slot="fixed" className="right-16">
-          <a href="https://ly729.airtime.pro" rel="noreferrer" target="_blank">
+          <a href="https://tx.729ly.net" rel="noreferrer" target="_blank">
             <IonFabButton className="w-12 h-12">
-            <IonImg src="/recorded.jpg" alt="同行频道" />
+            <IonImg src="/recorded.png" alt="同行频道" title="同行频道" />
             </IonFabButton>
           </a>
         </IonFab>
