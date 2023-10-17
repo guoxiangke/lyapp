@@ -53,7 +53,7 @@ const Lists = () => {
               {Category.name}
             </IonLabel>
           </IonItemDivider>
-            {Category && Category.programs.map((Program, i) => (
+            {Category && Category.programs.filter(item => item.end_at == null).map((Program, i) => (
               <IonItem key={i} button onClick={() => { console.log('clicked!'); }} routerLink={`/tabs/lists/${Program.alias}`}>
 
                 <IonThumbnail slot="start">
