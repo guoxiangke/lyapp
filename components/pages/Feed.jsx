@@ -80,7 +80,7 @@ const Feed = () => {
       <IonContent  className={`${styles.yyy} ion-padding`} fullscreen>
        {/*-- fab placed to the top end --*/}
         <IonFab vertical="bottom" horizontal="end" slot="fixed" className="right-16">
-          <a href="https://tx.729ly.net" rel="noreferrer" target="_blank">
+          <a href="https://729ly.net/zh-sc/listen/channel/channel-tx" rel="noreferrer" target="_blank">
             <IonFabButton className="w-12 h-12">
             <img className={`${styles.bgimg}`} src="/txclogo.png" alt="同行频道" title="同行频道" />
             </IonFabButton>
