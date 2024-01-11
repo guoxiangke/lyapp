@@ -85,6 +85,7 @@ function Player() {
           src={track.link}
           playing={!track.paused}
           preload={true}
+          html5={true}
           onLoad={handleOnLoad}
           ref={playerRef}
           onPlay={handleOnPlay}
