@@ -31,7 +31,7 @@ const Feed = () => {
   const { state, dispatch } = useContext(AppContext);
   const fetchTodayLists = useCallback(async () => {
     // Fetch json from external API
-    const res = await fetch('https://open.729ly.net/api/today')
+    const res = await fetch('https://open.1949ly.net/api/today')
     let today = await res.json()
     dispatch(setTodayTracks(today.data));
     dispatch(setTracks(today.data)); //第一次播放本页面的音乐的时候设定！用来上一曲/下一曲

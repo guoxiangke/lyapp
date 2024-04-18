@@ -32,12 +32,12 @@ const ListDetail = ({ match }) => {
 
   const fetchLists = useCallback(async () => {
     // Fetch json from external API
-    const res = await fetch('https://open.729ly.net/api/program/'+listId)
+    const res = await fetch('https://open.1949ly.net/api/program/'+listId)
     const programs = await res.json()
     dispatch(setProgramTracks(programs.data));
     // 如果是刷新，而非从 列表进入本页详情
     if(categories.length==0) {
-      const res = await fetch('https://open.729ly.net/api/categories')
+      const res = await fetch('https://open.1949ly.net/api/categories')
       const categories = await res.json()
       dispatch(setCategories(categories.data));
     }
