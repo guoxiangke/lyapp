@@ -16,7 +16,7 @@ const Lists = () => {
   const { state, dispatch } = useContext(AppContext);
   const fetchLists = useCallback(async () => {
     // Fetch json from external API
-    const res = await fetch('https://open.1949ly.net/api/categories')
+    const res = await fetch('https://open.lyapp3.net/api/categories')
     const categories = await res.json()
     dispatch(setCategories(categories.data));
   }, [dispatch]);
