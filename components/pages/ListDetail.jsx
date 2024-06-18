@@ -32,12 +32,12 @@ const ListDetail = ({ match }) => {
 
   const fetchLists = useCallback(async () => {
     // Fetch json from external API
-    const res = await fetch('https://open.lyapp3.net/api/program/'+listId)
+    const res = await fetch(process.env.apiUrl + '/api/program/'+listId)
     const programs = await res.json()
     dispatch(setProgramTracks(programs.data));
     // 如果是刷新，而非从 列表进入本页详情
     if(categories.length==0) {
-      const res = await fetch('https://open.lyapp3.net/api/categories')
+      const res = await fetch(process.env.apiUrl + '/api/categories')
       const categories = await res.json()
       dispatch(setCategories(categories.data));
     }
@@ -102,16 +102,14 @@ const ListDetail = ({ match }) => {
         </IonHeader>
         <Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />
         <IonList>
-        {state.programTracks && state.programTracks.filter(trackItem => {
-          return (trackItem.play_at >= las30days) // now - 30天
-        }).map((trackItem, index) => (
+        {state.programTracks && state.programTracks.map((trackItem, index) => (
             <IonItem button detail="false" key={index} onClick={() => doPlayToggle(trackItem, index)}>
               <IonThumbnail slot="start">
-                <IonImg src={"https://txly2.net/images/program_banners/"+Aprogram.alias+"_prog_banner_sq.png"} />
+                <IonImg src={process.env.bannersUrl.replace('[code]', Aprogram.alias)} />
               </IonThumbnail>
               <IonLabel>
                 <h3>{trackItem.description}</h3>
-                <p>20{trackItem.play_at.slice(0,2)}-{trackItem.play_at.slice(2,4)}-{trackItem.play_at.slice(4,6)}</p>
+                <p>{trackItem.play_at.slice(0,10)}</p>
               </IonLabel>
               {
                 trackItem.id  == ct.id

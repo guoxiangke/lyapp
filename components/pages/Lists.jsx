@@ -16,7 +16,8 @@ const Lists = () => {
   const { state, dispatch } = useContext(AppContext);
   const fetchLists = useCallback(async () => {
     // Fetch json from external API
-    const res = await fetch('https://open.lyapp3.net/api/categories')
+    console.log(process.env.apiUrl)
+    const res = await fetch(process.env.apiUrl + '/api/categories')
     const categories = await res.json()
     dispatch(setCategories(categories.data));
   }, [dispatch]);
@@ -57,7 +58,7 @@ const Lists = () => {
               <IonItem key={i} button onClick={() => { console.log('clicked!'); }} routerLink={`/tabs/lists/${Program.alias}`}>
 
                 <IonThumbnail slot="start">
-                  <IonImg src={"https://txly2.net/images/program_banners/"+Program.alias+"_prog_banner_sq.png"} />
+                  <IonImg src={process.env.bannersUrl.replace('[code]', Program.alias)} />
                 </IonThumbnail>
                 <IonLabel>
                   <h3>{Program.name}</h3>

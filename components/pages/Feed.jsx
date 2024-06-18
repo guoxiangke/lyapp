@@ -31,7 +31,7 @@ const Feed = () => {
   const { state, dispatch } = useContext(AppContext);
   const fetchTodayLists = useCallback(async () => {
     // Fetch json from external API
-    const res = await fetch('https://open.lyapp3.net/api/today')
+    const res = await fetch(process.env.apiUrl + '/api/today')
     let today = await res.json()
     dispatch(setTodayTracks(today.data));
     dispatch(setTracks(today.data)); //第一次播放本页面的音乐的时候设定！用来上一曲/下一曲
@@ -80,7 +80,7 @@ const Feed = () => {
       <IonContent  className={`${styles.yyy} ion-padding`} fullscreen>
        {/*-- fab placed to the top end --*/}
         <IonFab vertical="bottom" horizontal="end" slot="fixed" className="right-16">
-          <a href="https://lyapp2.net/zh-sc/listen/channel/channel-tx" rel="noreferrer" target="_blank">
+          <a href={process.env.txChannelUrl} rel="noreferrer" target="_blank">
             <IonFabButton className="w-12 h-12">
             <img className={`${styles.bgimg}`} src="/txclogo.png" alt="同行频道" title="同行频道" />
             </IonFabButton>
@@ -96,7 +96,7 @@ const Feed = () => {
         {state.todayTracks.map((trackItem, index) => (
             <IonItem button detail="false" key={index} onClick={() => doPlayToggle(trackItem, index)}>
               <IonThumbnail slot="start">
-                <IonImg src={"https://txly2.net/images/program_banners/"+trackItem.code+"_prog_banner_sq.png"} />
+                <IonImg src={process.env.bannersUrl.replace('[code]', trackItem.program.code)} />
               </IonThumbnail>
               <IonLabel>
                 <h2>{trackItem.program_name}</h2>

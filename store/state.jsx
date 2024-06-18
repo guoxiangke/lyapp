@@ -251,6 +251,11 @@ const initialState = {
     id:  76970,
     description: "罪得赦免（利17:10-16）",
     alias: "mw220323",
+    program: {
+      id: 28,
+      name: "旷野吗哪",
+      code:  "mw"
+    },
     program_id:  28,
     program_name:  "旷野吗哪",
     code:  "mw",

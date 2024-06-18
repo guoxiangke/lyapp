@@ -124,11 +124,11 @@ const Notifications = ({ open, onDidDismiss }) => {
         </IonHeader>
 
         
-          <IonImg className={`${styles.cover} pt-4`} src={"https://txly2.net/images/program_banners/"+track.code+"_prog_banner_sq.png"} />
+          <IonImg className={`${styles.cover} pt-4`} src={process.env.bannersUrl.replace('[code]', track.program.code)} />
          
               <div className={`px-8 py-2`}>
                 <div className="meta">
-                  <h5 className="title font-semibold text-sm">{track.program_name}</h5>
+                  <h5 className="title font-semibold text-sm">{track.program.name}</h5>
                   <p className="description text-sm">{track.description}</p>
                 </div>
               </div>
