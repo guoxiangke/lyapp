@@ -6,7 +6,7 @@ module.exports = {
   swcMinify: true,
   env: {
     apiUrl: 'https://y.lydt.work',
-    bannersUrl: 'https://txly2.net/images/program_banners/[code]_prog_banner_sq.png',
+    bannersUrl: 'https://d3ml8yyp1h3hy5.cloudfront.net/ly/image/cover/[code].jpg',
     txChannelUrl: 'https://lyapp2.net/zh-sc/listen/channel/channel-tx',
   }
 };
