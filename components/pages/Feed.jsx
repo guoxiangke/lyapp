@@ -99,7 +99,7 @@ const Feed = () => {
                 <IonImg src={process.env.bannersUrl.replace('[code]', trackItem.program.code)} />
               </IonThumbnail>
               <IonLabel>
-                <h2>{trackItem.program_name}</h2>
+                <h2>{trackItem.program.name}</h2>
                 <p>{trackItem.description}</p>
               </IonLabel>
               {
