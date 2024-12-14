@@ -62,7 +62,7 @@ const Lists = () => {
                 </IonThumbnail>
                 <IonLabel>
                   <h3>{Program.name}</h3>
-                  <p>{Program.brief}</p>
+                  <p>{Program.description}</p>
                 </IonLabel>
               </IonItem>
               ))}
