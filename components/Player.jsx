@@ -29,10 +29,10 @@ function Player() {
   })
 
   const handleOnLoad =  () => {
-    dispatch(setDuration(playerRef.current.duration()));
-    console.log(playerRef.current.duration(),'2 times?')
+    console.log(playerRef.current.duration())
   };
   const handleOnPlay =  () => {
+    dispatch(setDuration(playerRef.current.duration()));
     // dispatch(setOnPlay());
     // React useState hook is asynchronous!  https://dev.to/shareef/react-usestate-hook-is-asynchronous-1hia
     console.log('handleOnPlay');
