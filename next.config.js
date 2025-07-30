@@ -5,7 +5,7 @@ module.exports = {
   },
   swcMinify: true,
   env: {
-    apiUrl: 'https://y.lydt.work',
+    apiUrl: 'https://x.lydt.work',
     bannersUrl: 'https://d3ml8yyp1h3hy5.cloudfront.net/ly/image/cover/[code].jpg',
     txChannelUrl: 'https://g1.lygfpt.net/zh-sc/listen/channel/channel-tx',
     officialUrl: 'https://lyyydt.net',
