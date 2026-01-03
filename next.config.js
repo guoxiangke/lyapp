@@ -7,7 +7,7 @@ module.exports = {
   env: {
     apiUrl: 'https://x.lydt.work',
     bannersUrl: 'https://d3ml8yyp1h3hy5.cloudfront.net/ly/image/cover/[code].jpg',
-    txChannelUrl: 'https://dazzling-admin7bdd224f19.wpcomstaging.com',
+    txChannelUrl: 'https://home122022322.wordpress.com/txc/',
     officialUrl: 'https://lyyydt.net',
   }
 };
